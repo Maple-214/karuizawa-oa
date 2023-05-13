@@ -1,360 +1,345 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.title"
-        :placeholder="t('table.title')"
-        style="width: 200px"
-        class="filter-item"
-        @keyup.enter="handleFilter"
-      />
-      <el-select
-        v-model="listQuery.importance"
-        :placeholder="t('table.importance')"
-        clearable
-        style="width: 120px"
-        class="filter-item"
-      >
-        <el-option
-          v-for="item in importanceOptions"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
+      <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item"
+        @keyup.enter="handleFilter" />
+      <el-select v-model="listQuery.importance" :placeholder="t('table.importance')" clearable style="width: 120px"
+        class="filter-item">
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select
-        v-model="listQuery.type"
-        :placeholder="t('table.type')"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
-        <el-option
-          v-for="item in calendarTypeOptions"
-          :key="item.key"
-          :label="item.displayName + '(' + item.key + ')'"
-          :value="item.key"
-        />
+      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
+        style="width: 130px">
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'"
+          :value="item.key" />
       </el-select>
-      <el-select
-        v-model="listQuery.sort"
-        style="width: 140px"
-        class="filter-item"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
-        />
+      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ t("table.search") }}
       </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-      >
+      <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ t("table.add") }}
       </el-button>
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
-      >
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
+        @click="handleDownload">
         {{ t("table.export") }}
       </el-button>
-      <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left: 15px"
-        @change="tableKey = tableKey + 1"
-      >
+      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left: 15px" @change="tableKey = tableKey + 1">
         {{ t("table.reviewer") }}
       </el-checkbox>
     </div>
 
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%"
-      @sort-change="sortChange"
-    >
-      <el-table-column
-        :label="t('table.id')"
-        prop="id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template #default="{row}">
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+      @sort-change="sortChange">
+      <el-table-column :label="t('table.id')" prop="id" sortable="custom" align="center" width="80"
+        :class-name="getSortClass('id')">
+        <template #default="{ row }">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.date')"
-        width="180px"
-        align="center"
-      >
-        <template #default="{row}">
+      <el-table-column :label="t('table.preview_image')" width="180px" align="center">
+        <template #default="{ row }">
           <span>{{ row.timestamp }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.title')"
-        min-width="150px"
-      >
-        <template #default="{row}">
-          <span
-            class="link-type"
-            @click="handleUpdate(row)"
-          >{{
+      <el-table-column :label="t('table.swiper_number')" width="80px" align="center">
+        <template #default="{ row }">
+          <span>{{  }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.name')" min-width="150px">
+        <template #default="{ row }">
+          <span class="link-type" @click="handleUpdate(row)">{{
             row.title
           }}</span>
           <el-tag>{{ row.type }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.author')"
-        width="180px"
-        align="center"
-      >
-        <template #default="{row}">
+      <el-table-column :label="t('table.desc')" width="180px" align="center">
+        <template #default="{ row }">
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        v-if="showReviewer"
-        :label="t('table.reviewer')"
-        width="110px"
-        align="center"
-      >
-        <template #default="{row}">
+      <el-table-column v-if="showReviewer" :label="t('table.reviewer')" width="110px" align="center">
+        <template #default="{ row }">
           <span style="color: red">{{ row.reviewer }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.importance')"
-        width="105px"
-      >
-        <template #default="{row}">
-          <svg-icon
-            v-for="n in +row.importance"
-            :key="n"
-            name="star"
-            class="iconfont iconxing"
-          />
+      <el-table-column :label="t('table.station')" align="center" width="105px">
+        <template #default="{ row }">
+          <svg-icon v-for="n in +row.importance" :key="n" name="star" class="iconfont iconxing" />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.readings')"
-        align="center"
-        width="95"
-      >
-        <template #default="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleGetPageviews(row.pageviews)"
-          >{{ row.pageviews }}</span>
+      <el-table-column :label="t('table.price')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ row.pageviews
+          }}</span>
           <span v-else>0</span>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.status')"
-        class-name="status-col"
-        width="100"
-      >
-        <template #default="{row}">
+      <el-table-column :label="t('table.floor_plan')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.construction_area')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.transportation')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.House_structure')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.detail_desc')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.indoor_map_desc')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.location')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.structure_layers')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.private_road')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.setback')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.building_coverage_ratio')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.floor_area_ratio')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.facility')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.other_equipment')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.current_situation')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.mode_of_transaction')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.delivery_conditions')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.delivery_time')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.time')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.land_rights')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.remarks')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.other_expenses')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.city_planning_area_division')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.landmark')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.land_readjustment')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.ticity_planning_roadme')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.use_area')" align="center" width="95">
+        <template #default="{ row }">
+          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.terrain')" class-name="status-col" width="100">
+        <template #default="{ row }">
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.main_approach')" align="center" width="230" class-name="fixed-width">
+        <template #default="{ row, $index }">
+          
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.legal_restrictions')" align="center" width="230" class-name="fixed-width">
+        <template #default="{ row, $index }">
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.parking')" align="center" width="230" class-name="fixed-width">
+        <template #default="{ row, $index }">
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.update')" align="center" width="230" class-name="fixed-width">
+        <template #default="{ row, $index }">
+          
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('table.status')" class-name="status-col" width="100">
+        <template #default="{ row }">
           <el-tag :type="row.status">
             {{ row.status }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('table.actions')"
-        align="center"
-        width="230"
-        class-name="fixed-width"
-      >
-        <template #default="{row, $index}">
-          <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(row)"
-          >
+      <el-table-column :label="t('table.actions')" align="center" width="230" class-name="fixed-width">
+        <template #default="{ row, $index }">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
             {{ t("table.edit") }}
           </el-button>
-          <el-button
-            v-if="row.status !== 'published'"
-            size="mini"
-            type="success"
-            @click="handleModifyStatus(row, 'published')"
-          >
+          <el-button v-if="row.status !== 'published'" size="mini" type="success"
+            @click="handleModifyStatus(row, 'published')">
             {{ t("table.publish") }}
           </el-button>
-          <el-button
-            v-if="row.status !== 'draft'"
-            size="mini"
-            @click="handleModifyStatus(row, 'draft')"
-          >
+          <el-button v-if="row.status !== 'draft'" size="mini" @click="handleModifyStatus(row, 'draft')">
             {{ t("table.draft") }}
           </el-button>
-          <el-button
-            v-if="row.status !== 'deleted'"
-            size="mini"
-            type="danger"
-            @click="handleDelete(row, $index)"
-          >
+          <el-button v-if="row.status !== 'deleted'" size="mini" type="danger" @click="handleDelete(row, $index)">
             {{ t("table.delete") }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      :total="total"
-      v-show="total > 0"
-      v-model:page="listQuery.page"
-      v-model:limit="listQuery.limit"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[10, 20, 50, 100]"
-      layout="total, sizes, prev, pager, next, jumper"
-    />
+    <el-pagination :total="total" v-show="total > 0" v-model:page="listQuery.page" v-model:limit="listQuery.limit"
+      @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
+      :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" />
 
-    <el-dialog
-      :title="textMap[dialogStatus]"
-      v-model="dialogFormVisible"
-    >
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="tempArticleModel"
-        label-position="left"
-        label-width="100px"
-        style="width: 400px; margin-left: 50px"
-      >
-        <el-form-item
-          :label="t('table.type')"
-          prop="type"
-        >
-          <el-select
-            v-model="tempArticleModel.type"
-            class="filter-item"
-            placeholder="Please select"
-          >
-            <el-option
-              v-for="item in calendarTypeOptions"
-              :key="item.key"
-              :label="item.displayName"
-              :value="item.key"
-            />
+    <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="tempArticleModel" label-position="left" label-width="100px"
+        style="width: 400px; margin-left: 50px">
+        <el-form-item :label="t('table.type')" prop="type">
+          <el-select v-model="tempArticleModel.type" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item
-          :label="t('table.date')"
-          prop="timestamp"
-        >
-          <el-date-picker
-            v-model="tempArticleModel.timestamp"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
+        <el-form-item :label="t('table.date')" prop="timestamp">
+          <el-date-picker v-model="tempArticleModel.timestamp" type="datetime" placeholder="Please pick a date" />
         </el-form-item>
-        <el-form-item
-          :label="t('table.title')"
-          prop="title"
-        >
+        <el-form-item :label="t('table.title')" prop="title">
           <el-input v-model="tempArticleModel.title" />
         </el-form-item>
         <el-form-item :label="t('table.status')">
-          <el-select
-            v-model="tempArticleModel.status"
-            class="filter-item"
-            placeholder="Please select"
-          >
-            <el-option
-              v-for="item in statusOptions"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
+          <el-select v-model="tempArticleModel.status" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item :label="t('table.importance')">
-          <el-rate
-            v-model="tempArticleModel.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top: 8px"
-          />
+          <el-rate v-model="tempArticleModel.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3"
+            style="margin-top: 8px" />
         </el-form-item>
         <el-form-item :label="t('table.remark')">
-          <el-input
-            v-model="tempArticleModel.abstractContent"
-            :autosize="{minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
+          <el-input v-model="tempArticleModel.abstractContent" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea"
+            placeholder="Please input" />
+        </el-form-item>
+        <el-form-item :label="t('table.remark')">
+          <!-- <Upload /> -->
         </el-form-item>
       </el-form>
       <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           {{ t("table.cancel") }}
         </el-button>
-        <el-button
-          type="primary"
-          @click="dialogStatus === 'create' ? createData() : updateData()"
-        >
+        <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
           {{ t("table.confirm") }}
         </el-button>
       </div>
     </el-dialog>
 
-    <el-dialog
-      v-model:visible="dialogPageviewsVisible"
-      title="Reading statistics"
-    >
-      <el-table
-        :data="pageviewsData"
-        border
-        fit
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="key"
-          label="Channel"
-        />
-        <el-table-column
-          prop="pageviews"
-          label="Pageviews"
-        />
+    
+    <el-dialog v-model:visible="dialogPageviewsVisible" title="Reading statistics">
+      <el-table :data="pageviewsData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pageviews" label="Pageviews" />
       </el-table>
       <span class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="dialogPageviewsVisible = false"
-        >{{
+        <el-button type="primary" @click="dialogPageviewsVisible = false">{{
           t("table.confirm")
         }}</el-button>
       </span>
@@ -386,10 +371,12 @@ import { ArticleModel } from '@/model/articleModel'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import { useI18n } from 'vue-i18n'
+// import Upload from './dynamic-table/components/Upload.vue'
 // import Pagination from '@/components/Pagination/index.vue'
 export default defineComponent({
   components: {
     // Pagination
+    // Upload
   },
   setup() {
     const { t } = useI18n()
@@ -524,7 +511,7 @@ export default defineComponent({
       },
       createData() {
         const form = unref(dataForm)
-        form.validate(async(valid: any) => {
+        form.validate(async (valid: any) => {
           if (valid) {
             const ArticleModel = dataMap.tempArticleModel
             ArticleModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
@@ -560,7 +547,7 @@ export default defineComponent({
       },
       updateData() {
         const form = unref(dataForm)
-        form.validate(async(valid: any) => {
+        form.validate(async (valid: any) => {
           if (valid) {
             const tempData = Object.assign({}, dataMap.tempArticleModel)
             tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
