@@ -1,30 +1,28 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item"
-        @keyup.enter="handleFilter" />
-      <el-select v-model="listQuery.importance" :placeholder="t('table.importance')" clearable style="width: 120px"
-        class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item" @keyup.enter="handleFilter" />
+
+      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item" style="width: 130px">
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'" :value="item.key" />
       </el-select>
-      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
-        style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'"
-          :value="item.key" />
-      </el-select>
+
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
+
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ t("table.search") }}
       </el-button>
+
       <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit" @click="handleCreate">
         {{ t("table.add") }}
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
-        @click="handleDownload">
+
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         {{ t("table.export") }}
       </el-button>
+
       <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left: 15px" @change="tableKey = tableKey + 1">
         {{ t("table.reviewer") }}
       </el-checkbox>
@@ -32,33 +30,30 @@
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
       @sort-change="sortChange">
-      <el-table-column :label="t('table.id')" prop="id" sortable="custom" align="center" width="80"
+      <el-table-column :label="t('table.id')" prop="id" sortable="custom" align="center" width="220"
         :class-name="getSortClass('id')">
         <template #default="{ row }">
-          <span>{{ row.id }}</span>
+          <span>{{ row._id }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.preview_image')" width="180px" align="center">
         <template #default="{ row }">
-          <span>{{ row.preview_image }}</span>
+          <img height="120" :src="row.preview_image" alt="">
         </template>
       </el-table-column>
       <el-table-column :label="t('table.swiper_number')" width="80px" align="center">
         <template #default="{ row }">
-          <span>{{  }}</span>
+          <span>{{ row.swiper_number }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.name')" min-width="150px">
+      <el-table-column :label="t('table.name')" min-width="150px" align="center">
         <template #default="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
-            row.title
-          }}</span>
-          <el-tag>{{ row.type }}</el-tag>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.desc')" width="180px" align="center">
         <template #default="{ row }">
-          <span>{{ row.author }}</span>
+          <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
       <el-table-column v-if="showReviewer" :label="t('table.reviewer')" width="110px" align="center">
@@ -69,199 +64,194 @@
       <el-table-column :label="t('table.station')" align="center" width="105px">
         <template #default="{ row }">
           <svg-icon v-for="n in +row.importance" :key="n" name="star" class="iconfont iconxing" />
+          <span>{{ row.station }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.price')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ row.pageviews
-          }}</span>
-          <span v-else>0</span>
+          <span>{{ row.price }}</span>
+
         </template>
       </el-table-column>
       <el-table-column :label="t('table.floor_plan')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.floor_plan }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.construction_area')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.construction_area }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.transportation')" align="center" width="95">
+      <el-table-column :label="t('table.transportation')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.transportation }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.House_structure')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.House_structure }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.detail_desc')" align="center" width="95">
+      <el-table-column :label="t('table.detail_desc')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.detail_desc }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.indoor_map_desc')" align="center" width="95">
+      <el-table-column :label="t('table.indoor_map_desc')" align="center" width="1150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <div class="table-img-container">
+            <div class="table-img-box" v-for="item in row.indoor_map_desc" :key="item">
+              <img class="table-img" :src="item.src" :alt="item.desc" srcset="">
+              <span class="table-desc">{{ item.desc }}</span>
+            </div>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.location')" align="center" width="95">
+      <el-table-column :label="t('table.location')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.location }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.regional_district_block')" align="center" width="95">
+      <el-table-column :label="t('table.regional_district_block')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.regional_district_block }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.private_road')" align="center" width="95">
+      <el-table-column :label="t('table.private_road')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.private_road }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.setback')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.setback }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.building_coverage_ratio')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.building_coverage_ratio }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.floor_area_ratio')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.floor_area_ratio }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.facility')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.facility }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.other_equipment')" align="center" width="95">
+      <el-table-column :label="t('table.other_equipment')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.other_equipment }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.current_situation')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.current_situation }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.mode_of_transaction')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.mode_of_transaction }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.delivery_conditions')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.delivery_conditions }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.delivery_time')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.delivery_time }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.time')" align="center" width="95">
+      <el-table-column :label="t('table.time')" align="center" width="110">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.time }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.land_rights')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.land_rights }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.remarks')" align="center" width="95">
+      <el-table-column :label="t('table.remarks')" align="center" width="150">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.remarks }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.other_expenses')" align="center" width="95">
+      <el-table-column :label="t('table.other_expenses')" align="center" width="170">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.other_expenses }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.city_planning_area_division')" align="center" width="95">
+      <el-table-column :label="t('table.city_planning_area_division')" align="center" width="110">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.city_planning_area_division }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.landmark')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.landmark }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.land_readjustment')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.land_readjustment }}</span>
+
         </template>
       </el-table-column>
       <el-table-column :label="t('table.ticity_planning_roadme')" align="center" width="95">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.ticity_planning_roadme }}</span>
+
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.use_area')" align="center" width="95">
+      <el-table-column :label="t('table.use_area')" align="center" width="110">
         <template #default="{ row }">
-          <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
-          <span v-else>0</span>
+          <span>{{ row.use_area }}</span>
+
         </template>
       </el-table-column>
       <el-table-column :label="t('table.terrain')" class-name="status-col" width="100">
         <template #default="{ row }">
+          <span>{{ row.terrain }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.main_approach')" align="center" width="230" class-name="fixed-width">
         <template #default="{ row, $index }">
-          
+          <span>{{ row.main_approach }}</span>
+
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.legal_restrictions')" align="center" width="230" class-name="fixed-width">
+      <el-table-column :label="t('table.legal_restrictions')" align="center" width="95" class-name="fixed-width">
         <template #default="{ row, $index }">
+          <span>{{ row.legal_restrictions }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.parking')" align="center" width="230" class-name="fixed-width">
+      <el-table-column :label="t('table.parking')" align="center" width="95" class-name="fixed-width">
         <template #default="{ row, $index }">
+          <span>{{ row.parking }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.update')" align="center" width="230" class-name="fixed-width">
+
+      <el-table-column :label="t('table.update')" align="center" width="130" class-name="fixed-width">
         <template #default="{ row, $index }">
-          
+          <span>{{ row.update }}</span>
+
         </template>
       </el-table-column>
+
+      <el-table-column :label="t('table.label')" align="center" width="130" class-name="fixed-width">
+        <template #default="{ row, $index }">
+          <!-- <span>{{ row.label }}</span> -->
+
+        </template>
+      </el-table-column>
+
       <el-table-column :label="t('table.status')" class-name="status-col" width="100">
         <template #default="{ row }">
           <el-tag :type="row.status">
@@ -269,7 +259,8 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.actions')" align="center" width="230" class-name="fixed-width">
+
+      <el-table-column :label="t('table.actions')" align="center" width="320" class-name="fixed-width">
         <template #default="{ row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             {{ t("table.edit") }}
@@ -286,36 +277,36 @@
           </el-button>
         </template>
       </el-table-column>
+
     </el-table>
     <el-pagination :total="total" v-show="total > 0" v-model:page="listQuery.page" v-model:limit="listQuery.limit"
       @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
       :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" />
 
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="tempArticleModel" label-position="left" label-width="100px"
-        style="width: 400px; margin-left: 50px">
-        <el-form-item :label="t('table.type')" prop="type">
-          <el-select v-model="tempArticleModel.type" class="filter-item" placeholder="Please select">
+      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="100px" style="width: 400px; margin-left: 50px">
+        <el-form-item :label="t('table.swiper_number')" prop="type">
+          <el-select v-model="tempHourseModel.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
         <el-form-item :label="t('table.date')" prop="timestamp">
-          <el-date-picker v-model="tempArticleModel.timestamp" type="datetime" placeholder="Please pick a date" />
+          <el-date-picker v-model="tempHourseModel.timestamp" type="datetime" placeholder="Please pick a date" />
         </el-form-item>
         <el-form-item :label="t('table.title')" prop="title">
-          <el-input v-model="tempArticleModel.title" />
+          <el-input v-model="tempHourseModel.title" />
         </el-form-item>
         <el-form-item :label="t('table.status')">
-          <el-select v-model="tempArticleModel.status" class="filter-item" placeholder="Please select">
+          <el-select v-model="tempHourseModel.status" class="filter-item" placeholder="Please select">
             <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item :label="t('table.importance')">
-          <el-rate v-model="tempArticleModel.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3"
+          <el-rate v-model="tempHourseModel.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3"
             style="margin-top: 8px" />
         </el-form-item>
         <el-form-item :label="t('table.remark')">
-          <el-input v-model="tempArticleModel.abstractContent" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea"
+          <el-input v-model="tempHourseModel.abstractContent" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea"
             placeholder="Please input" />
         </el-form-item>
         <el-form-item :label="t('table.remark')">
@@ -332,7 +323,7 @@
       </div>
     </el-dialog>
 
-    
+
     <el-dialog v-model:visible="dialogPageviewsVisible" title="Reading statistics">
       <el-table :data="pageviewsData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
@@ -364,9 +355,9 @@ import {
   getPageviews,
   createArticle,
   updateArticle,
-  defaultArticleModel
+  defaultHourseModel
 } from '@/apis/articles'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel'
 
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
@@ -381,12 +372,14 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const calendarTypeOptions = [
-      { key: 'CN', displayName: 'China' },
-      { key: 'US', displayName: 'USA' },
-      { key: 'JP', displayName: 'Japan' },
-      { key: 'EU', displayName: 'Eurozone' }
+      { key: '1', displayName: '1' },
+      { key: '2', displayName: '2' },
+      { key: '3', displayName: '3' },
+      { key: '4', displayName: '4' },
+      { key: '5', displayName: '5' },
+      { key: '6', displayName: '6' },
+      { key: '7', displayName: '7' },
     ]
-
     const calendarTypeKeyValue = calendarTypeOptions.reduce(
       (acc: { [key: string]: string }, cur) => {
         acc[cur.key] = cur.displayName
@@ -397,7 +390,7 @@ export default defineComponent({
     const dataForm = ref(ElForm)
     const dataMap = reactive({
       tableKey: 0,
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       total: 0,
       listLoading: true,
       listQuery: {
@@ -409,7 +402,6 @@ export default defineComponent({
         sort: '+id'
       },
 
-      importanceOptions: [1, 2, 3],
       calendarTypeOptions: calendarTypeOptions,
       sortOptions: [
         { label: 'ID Ascending', key: '+id' },
@@ -421,8 +413,8 @@ export default defineComponent({
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: t('table.edit'),
+        create: t('table.create')
       },
 
       dialogPageviewsVisible: false,
@@ -443,7 +435,7 @@ export default defineComponent({
         ]
       },
       downloadLoading: false,
-      tempArticleModel: defaultArticleModel,
+      tempHourseModel: defaultHourseModel,
       handleCurrentChange(page?: any) {
         dataMap.getList(page)
       },
@@ -462,8 +454,8 @@ export default defineComponent({
         // @ts-ignore
         const data = await getArticles(dataMap.listQuery)
         dataMap.list = data?.data ?? []
-        console.log({list:data });
-        
+        console.log({ list: data });
+
         dataMap.total = data?.data.total ?? 0
 
         // Just to simulate the time of the request
@@ -500,12 +492,14 @@ export default defineComponent({
         const sort = dataMap.listQuery.sort
         return sort === `+${key}` ? 'ascending' : 'descending'
       },
-      resetTempArticleModel() {
-        dataMap.tempArticleModel = cloneDeep(defaultArticleModel)
+      resetTempHourseModel() {
+        dataMap.tempHourseModel = cloneDeep(defaultHourseModel)
       },
       handleCreate() {
         console.log('添加了')
-        dataMap.resetTempArticleModel()
+        dataMap.resetTempHourseModel()
+        console.log(t('table.create'));
+        
         dataMap.dialogStatus = 'create'
         dataMap.dialogFormVisible = true
         nextTick(() => {
@@ -516,9 +510,9 @@ export default defineComponent({
         const form = unref(dataForm)
         form.validate(async (valid: any) => {
           if (valid) {
-            const ArticleModel = dataMap.tempArticleModel
-            ArticleModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
-            const addData = await createArticle(ArticleModel)
+            const HourseModel = dataMap.tempHourseModel
+            HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
+            const addData = await createArticle(HourseModel)
 
             if (addData?.data.id) {
               alert(addData.data.id)
@@ -537,7 +531,7 @@ export default defineComponent({
       },
 
       handleUpdate(row: any) {
-        dataMap.tempArticleModel = Object.assign({}, row)
+        dataMap.tempHourseModel = Object.assign({}, row)
         dataMap.dialogStatus = 'update'
         dataMap.dialogFormVisible = true
         nextTick(() => {
@@ -548,7 +542,7 @@ export default defineComponent({
         const form = unref(dataForm)
         form.validate(async (valid: any) => {
           if (valid) {
-            const tempData = Object.assign({}, dataMap.tempArticleModel)
+            const tempData = Object.assign({}, dataMap.tempHourseModel)
             console.log(tempData)
             const data = await updateArticle(tempData)
 
@@ -608,3 +602,29 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped>
+.table-img-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.table-img-box {
+  width: calc(15%);
+  display: flex;
+  flex-direction: column;
+}
+
+.table-img-box .table-desc {
+  display: block;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-img-box .table-img {
+  height: 100px;
+  /* width: 100px; */
+  margin-right: 15px;
+}
+</style>

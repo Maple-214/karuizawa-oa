@@ -1,13 +1,11 @@
 /*
- * @Description:
- * @Autor: scy😊
- * @Date: 2021-01-20 11:46:27
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-21 17:33:29
+ * @Description: HourseModel 类型
  */
-export interface ArticleModel {
+export interface HourseModel {
   // ID
   id: Number,
+  // ラベル
+  label: any[]
   // 'プレビュー'
   preview_image: String,
   // '名前'

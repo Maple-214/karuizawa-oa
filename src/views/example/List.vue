@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import { getArticles } from '@/apis/articles'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 
 import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
@@ -117,7 +117,7 @@ export default defineComponent({
   setup() {
     const dataMap = reactive({
       total: 0,
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listLoading: true,
       listQuery: {
         page: 1,

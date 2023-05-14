@@ -62,20 +62,20 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 export default defineComponent({
   components: {
     draggable: VueDraggableNext
   },
   props: {
     list1: {
-      type: [] as PropType<Array<ArticleModel>>,
+      type: [] as PropType<Array<HourseModel>>,
       default: () => {
         return []
       }
     },
     list2: {
-      type: [] as PropType<Array<ArticleModel>>,
+      type: [] as PropType<Array<HourseModel>>,
       default: () => {
         return []
       }
@@ -98,13 +98,13 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const isNotInList1 = (v: ArticleModel) => {
+    const isNotInList1 = (v: HourseModel) => {
       return props.list1.every((k: any) => v.id !== k.id)
     }
-    const isNotInList2 = (v: ArticleModel) => {
+    const isNotInList2 = (v: HourseModel) => {
       return props.list2.every((k: any) => v.id !== k.id)
     }
-    const deleteEle = (ele: ArticleModel) => {
+    const deleteEle = (ele: HourseModel) => {
       for (const item of props.list1) {
         if (item.id === ele.id) {
           const index = props.list1.indexOf(item)
@@ -118,7 +118,7 @@ export default defineComponent({
         props.list2.unshift(ele)
       }
     }
-    const pushEle = (ele: ArticleModel) => {
+    const pushEle = (ele: HourseModel) => {
       for (const item of props.list2) {
         if (item.id === ele.id) {
           const index = props.list2.indexOf(item)

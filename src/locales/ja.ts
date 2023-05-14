@@ -114,6 +114,7 @@ export default {
     table: {
       dynamicTips1: '固定表头, 按照表头顺序排序',
       dynamicTips2: '不固定表头, 按照点击顺序排序',
+      create: '作成',
       dragTips1: '默认顺序',
       dragTips2: '拖拽后顺序',
       title: '标题',
@@ -124,13 +125,13 @@ export default {
       add: '添加',
       export: '导出',
       reviewer: '审核人',
-      id: '序号',
+      id: 'ID',
       date: '时间',
       author: '作者',
       readings: '阅读数',
       status: '状态',
       actions: '操作',
-      edit: '编辑',
+      edit: '編集',
       publish: '发布',
       draft: '草稿',
       delete: '删除',
@@ -178,6 +179,7 @@ export default {
       update: '次回更新予定日',
       category: '类别',
       swiper_number: '轮播区域',
+      label: 'ラベル'
       
   
     },

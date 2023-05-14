@@ -114,7 +114,7 @@
 
 <script lang="ts">
 import { reactive, defineComponent, nextTick, onMounted, toRefs } from 'vue'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 
 import Sortable from 'sortablejs'
 import { getArticles } from '@/apis/articles'
@@ -124,7 +124,7 @@ export default defineComponent({
     let sortable: Sortable | null = null
     const { t } = useI18n()
     const dataMap = reactive({
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listLoading: true,
       total: 0,
       oldList: [0],

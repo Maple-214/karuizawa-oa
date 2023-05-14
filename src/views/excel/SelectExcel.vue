@@ -93,7 +93,7 @@
 
 import { defineComponent, reactive, toRefs, onMounted, unref, ref } from 'vue'
 import { getArticles } from '@/apis/articles'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 import { formatJson } from '@/utils'
 import { exportJson2Excel } from '@/utils/excel'
 import { ElTable, ElMessage } from 'element-plus'
@@ -102,7 +102,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const dataMap = reactive({
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listLoading: true,
       downloadLoading: false,
       multipleSelection: [],

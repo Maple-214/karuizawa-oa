@@ -97,7 +97,7 @@
 <script lang="ts">
 import { reactive, defineComponent, onMounted, toRefs } from 'vue'
 import { getArticles } from '@/apis/articles'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel'
 import { formatJson } from '@/utils'
 import { exportJson2Excel } from '@/utils/excel'
 import FilenameOption from './components/FilenameOption.vue'
@@ -114,7 +114,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const dataMap = reactive({
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listLoading: true,
       downloadLoading: false,
       filename: '',

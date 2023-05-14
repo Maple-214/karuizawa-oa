@@ -8,10 +8,10 @@
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
 import { ContentType, Method } from 'axios-mapper'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
-export const defaultArticleModel: ArticleModel = {
+export const defaultHourseModel: HourseModel = {
   id: 0,
   "preview_image": "",
   "name": "",
@@ -89,26 +89,27 @@ export const defaultArticleModel: ArticleModel = {
   "fav": false,
   "regional_district_block": "高度地区",
   structure_layers: '',
+  label: []
 }
 
 export const getArticles = (params: any) => {
-  return https().request<RootObject<ArticleList<ArticleModel>>>('hourse/hourses', Method.GET, params, ContentType.json)
+  return https().request<RootObject<ArticleList<HourseModel>>>('hourse/hourses', Method.GET, params, ContentType.json)
 }
 
 export const getArticle = (params: any) => {
-  return https().request<RootObject<ArticleModel>>('article/articleInfo', Method.GET, params, ContentType.form)
+  return https().request<RootObject<HourseModel>>('article/articleInfo', Method.GET, params, ContentType.form)
 }
 
 export const createArticle = (data: any) => {
-  return https().request<RootObject<ArticleModel>>('article/createArticle', Method.POST, data, ContentType.json)
+  return https().request<RootObject<HourseModel>>('article/createArticle', Method.POST, data, ContentType.json)
 }
 
 export const updateArticle = (params: any) => {
-  return https().request<RootObject<ArticleModel>>('article/updateArticle', Method.POST, params, ContentType.json)
+  return https().request<RootObject<HourseModel>>('article/updateArticle', Method.POST, params, ContentType.json)
 }
 
 export const deleteArticle = (id: number) => {
-  return https().request<RootObject<ArticleModel>>(`articles/${id}`, Method.POST, undefined, ContentType.json)
+  return https().request<RootObject<HourseModel>>(`articles/${id}`, Method.POST, undefined, ContentType.json)
 }
 
 export interface Pageviews {
