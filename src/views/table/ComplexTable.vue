@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column :label="t('table.preview_image')" width="180px" align="center">
         <template #default="{ row }">
-          <span>{{ row.timestamp }}</span>
+          <span>{{ row.preview_image }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="t('table.swiper_number')" width="80px" align="center">
@@ -120,7 +120,7 @@
           <span v-else>0</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.structure_layers')" align="center" width="95">
+      <el-table-column :label="t('table.regional_district_block')" align="center" width="95">
         <template #default="{ row }">
           <span v-if="row.pageviews" class="link-type" @click="handleGetPageviews(row.pageviews)">{{ }}</span>
           <span v-else>0</span>
@@ -459,8 +459,11 @@ export default defineComponent({
         }
         console.log(total)
         dataMap.listLoading = true
+        // @ts-ignore
         const data = await getArticles(dataMap.listQuery)
-        dataMap.list = data?.data.items ?? []
+        dataMap.list = data?.data ?? []
+        console.log({list:data });
+        
         dataMap.total = data?.data.total ?? 0
 
         // Just to simulate the time of the request
@@ -515,7 +518,6 @@ export default defineComponent({
           if (valid) {
             const ArticleModel = dataMap.tempArticleModel
             ArticleModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
-            ArticleModel.author = 'RCYJ_Scy'
             const addData = await createArticle(ArticleModel)
 
             if (addData?.data.id) {
@@ -536,9 +538,6 @@ export default defineComponent({
 
       handleUpdate(row: any) {
         dataMap.tempArticleModel = Object.assign({}, row)
-        dataMap.tempArticleModel.timestamp = +new Date(
-          dataMap.tempArticleModel.timestamp
-        )
         dataMap.dialogStatus = 'update'
         dataMap.dialogFormVisible = true
         nextTick(() => {
@@ -550,14 +549,13 @@ export default defineComponent({
         form.validate(async (valid: any) => {
           if (valid) {
             const tempData = Object.assign({}, dataMap.tempArticleModel)
-            tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
             console.log(tempData)
             const data = await updateArticle(tempData)
 
             console.log(data, '-----------------')
             if (data) {
               const index = dataMap.list.findIndex(
-                (v) => v.id === data.data.id
+                (v: { id: any }) => v.id === data.data.id
               )
               dataMap.list.splice(index, 1, data.data)
             }

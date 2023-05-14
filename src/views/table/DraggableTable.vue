@@ -141,7 +141,7 @@ export default defineComponent({
           dataMap.listLoading = false
         }, 0.5 * 1000)
         dataMap.total = data?.data.total ?? 0
-        dataMap.oldList = dataMap.list.map((v) => v.id)
+        dataMap.oldList = dataMap.list.map((v: { id: any }) => v.id)
         dataMap.newList = this.oldList.slice()
         nextTick(() => {
           this.setSort()
@@ -153,7 +153,7 @@ export default defineComponent({
         )[0] as HTMLElement
         sortable = Sortable.create(el, {
           ghostClass: 'sortable-ghost', // Class name for the drop placeholder
-          onEnd: (evt) => {
+          onEnd: (evt: { oldIndex: any; newIndex: any }) => {
             if (
               typeof evt.oldIndex !== 'undefined' &&
               typeof evt.newIndex !== 'undefined'

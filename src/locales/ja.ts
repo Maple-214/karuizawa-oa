@@ -137,20 +137,19 @@ export default {
       cancel: '取 消',
       confirm: '确 定',
       // 
-      preview_image: '预览图',
-      name: '名称',
-      desc: '描述',
-      station: '车站',
-      price: '价格',
-      floor_plan: '平面图',
+      preview_image: 'プレビュー',
+      name: '名前',
+      desc: '説明',
+      station: '駅',
+      price: '価格',
+      floor_plan: '間取り',
       construction_area: '建筑面积',
-      Land_area: '土地面积',
+      Land_area: '土地面積',
       transportation: '交通',
-      House_structure: '房屋结构',
-      detail_desc: '详情页描述',
-      indoor_map_desc: '室内图 & 描述',
+      House_structure: '構造・階数',
+      detail_desc: '詳細ページの説明',
+      indoor_map_desc: '内部の図面と説明',
       location: '所在地',
-      structure_layers: '结构/层数',
       private_road: '私道負担面積',
       setback: 'セットバック',
       building_coverage_ratio: '建ぺい率',
@@ -165,6 +164,7 @@ export default {
       land_rights: '土地権利',
       remarks: '備考',
       other_expenses: 'その他費用',
+      regional_district_block:'地域地区街区',
       city_planning_area_division: '都市計画区域区分',
       landmark: '地目',
       land_readjustment: '区画整理',
@@ -179,13 +179,6 @@ export default {
       category: '类别',
       swiper_number: '轮播区域',
       
-
-
-  
-      
-  
-      
-  
   
     },
     example: {
