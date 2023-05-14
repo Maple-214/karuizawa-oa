@@ -319,7 +319,7 @@
             placeholder="Please input" />
         </el-form-item>
         <el-form-item :label="t('table.remark')">
-          <!-- <Upload /> -->
+          <Upload />
         </el-form-item>
       </el-form>
       <div class="dialog-footer">
@@ -371,12 +371,12 @@ import { ArticleModel } from '@/model/articleModel'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import { useI18n } from 'vue-i18n'
-// import Upload from './dynamic-table/components/Upload.vue'
+import Upload from './dynamic-table/components/Upload.vue'
 // import Pagination from '@/components/Pagination/index.vue'
 export default defineComponent({
   components: {
     // Pagination
-    // Upload
+    Upload
   },
   setup() {
     const { t } = useI18n()
