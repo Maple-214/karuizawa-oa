@@ -10,25 +10,24 @@
         </el-dialog>
     </el-form> -->
     <el-form>
-        <el-upload :limit="1" action="" accept="image/*" :on-change="uploadFile" list-type="picture-card"
+        <el-upload :limit="1" action="http://192.168.1.48:3300/upload" accept="image/*" :on-change="uploadFile" list-type="picture-card"
             :auto-upload="false" :file-list="fileList" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove" ref="upload" class="avatar-uploader" :disabled="disabled">
             <i class="el-icon-plus"></i>
         </el-upload>
-        <el-dialog width="30%" :visible.sync="dialogVisible">
-            <img width="100%" :src="imgUrl.url" alt />
-        </el-dialog>
     </el-form>
 </template>
   
 <script>
 //引入上传图片接口
 // import { uploadImg } from "@/api/public/api";
+import { useStore } from '@/store'
 export default {
     props: {
         limit: Number,
         fileList: Array,
         disabled: Boolean,
+        handlerUpload: Function
     },
     data() {
         return {
@@ -44,6 +43,10 @@ export default {
             if (newName.length == this.limit) this.showUpload = true;
             else this.showUpload = false;
         },
+    },
+    onMounted () {
+        console.log({fileList});
+
     },
     methods: {
         //文件列表移除文件时的函数
@@ -96,16 +99,32 @@ export default {
                 if (this.limit == 1) this.imgUrl = []; //此处判断为一张的时候需要清空数组
                 const params = new FormData();
                 console.log(params);
-                params.append("source", file);
-                uploadImg(params).then((res) => {
-                    //这里返回的数据结构(根据自己返回结构进行修改)
-                    if (res.data.status === 1) {
+                params.append("file", file);
+                fetch('http://192.168.1.48:3300/upload', {
+                    method: 'POST',
+                    body: params,
+                    headers: {
+                        token: useStore().state.user.token,
+                    }
+                }).then(r => r.json()).then(res =>{
+                    // console.log(res);
+                    if(res.msg === "success") {
                         this.$message.success("上传成功");
-                        this.imgUrl = res.data;
-                        //调用父组件的方法来传递图片参数
-                        this.$emit("getUrl", this.imgUrl);
-                    } else this.$message.error("上传失败");
-                });
+                        this.handlerUpload(res.data)
+
+                    } else {
+                        this.$message.error("上传失败");
+                    }
+                })
+                // uploadImg(params).then((res) => {
+                //     //这里返回的数据结构(根据自己返回结构进行修改)
+                //     if (res.data.status === 1) {
+                //         this.$message.success("上传成功");
+                //         this.imgUrl = res.data;
+                //         //调用父组件的方法来传递图片参数
+                //         this.$emit("getUrl", this.imgUrl);
+                //     } else this.$message.error("上传失败");
+                // });
             }
         },
         //文件超出个数限制时的函数

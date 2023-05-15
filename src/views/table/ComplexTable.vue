@@ -1,10 +1,13 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item" @keyup.enter="handleFilter" />
+      <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item"
+        @keyup.enter="handleFilter" />
 
-      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'" :value="item.key" />
+      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
+        style="width: 130px">
+        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'"
+          :value="item.key" />
       </el-select>
 
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
@@ -19,7 +22,8 @@
         {{ t("table.add") }}
       </el-button>
 
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
+        @click="handleDownload">
         {{ t("table.export") }}
       </el-button>
 
@@ -279,14 +283,18 @@
       </el-table-column>
 
     </el-table>
+
     <el-pagination :total="total" v-show="total > 0" v-model:page="listQuery.page" v-model:limit="listQuery.limit"
       @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
       :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" />
 
+
+      <!-- 弹窗 -->
+
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="100px" style="width: 400px; margin-left: 50px">
-        <el-form-item :label="t('table.swiper_number')" prop="type">
-          <el-select v-model="tempHourseModel.type" class="filter-item" placeholder="Please select">
+      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="100px">
+        <el-form-item :label="t('table.swiper_number')" prop="swiper_number">
+          <el-select v-model="tempHourseModel.swiper_number" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -310,7 +318,7 @@
             placeholder="Please input" />
         </el-form-item>
         <el-form-item :label="t('table.remark')">
-          <Upload />
+          <Upload :handlerUpload="handlerUpload" />
         </el-form-item>
       </el-form>
       <div class="dialog-footer">
@@ -363,10 +371,8 @@ import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import Upload from './dynamic-table/components/Upload.vue'
-// import Pagination from '@/components/Pagination/index.vue'
 export default defineComponent({
   components: {
-    // Pagination
     Upload
   },
   setup() {
@@ -388,216 +394,230 @@ export default defineComponent({
       {}
     ) as { [key: string]: string }
     const dataForm = ref(ElForm)
-    const dataMap = reactive({
-      tableKey: 0,
-      list: Array<HourseModel>(),
-      total: 0,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 10,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
-      },
+    const dataMap = reactive(
+      {
+        tableKey: 0,
+        list: Array<HourseModel>(),
+        total: 0,
+        listLoading: true,
+        listQuery: {
+          page: 1,
+          limit: 10,
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          sort: '+id'
+        },
 
-      calendarTypeOptions: calendarTypeOptions,
-      sortOptions: [
-        { label: 'ID Ascending', key: '+id' },
-        { label: 'ID Descending', key: '-id' }
-      ],
-
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: t('table.edit'),
-        create: t('table.create')
-      },
-
-      dialogPageviewsVisible: false,
-      pageviewsData: [],
-      rules: {
-        type: [
-          { required: true, message: 'type is required', trigger: 'change' }
+        calendarTypeOptions: calendarTypeOptions,
+        sortOptions: [
+          { label: 'ID Ascending', key: '+id' },
+          { label: 'ID Descending', key: '-id' }
         ],
-        timestamp: [
-          {
-            required: true,
-            message: 'timestamp is required',
-            trigger: 'change'
+
+        statusOptions: ['published', 'draft', 'deleted'],
+        showReviewer: false,
+        dialogFormVisible: false,
+        dialogStatus: '',
+        textMap: {
+          update: t('table.edit'),
+          create: t('table.create')
+        },
+
+        dialogPageviewsVisible: false,
+        pageviewsData: [],
+        rules: {
+          // type: [ { required: true, message: 'type is required', trigger: 'change' }],
+          // timestamp: [{ required: true,message: 'timestamp is required',trigger: 'change'}],
+          // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        },
+        downloadLoading: false,
+        tempHourseModel: defaultHourseModel,
+
+        handleCurrentChange(page?: any) {
+          dataMap.getList(page)
+        },
+
+        handlerUpload(file: any) {
+          dataMap.tempHourseModel.filist = [file]
+
+        },
+
+        handleSizeChange(val: any) {
+          dataMap.getList(null, null, val)
+        },
+
+        async getList(page?: any, total?: any, limit?: any) {
+          if (page) {
+            dataMap.listQuery.page = page
           }
-        ],
-        title: [
-          { required: true, message: 'title is required', trigger: 'blur' }
-        ]
-      },
-      downloadLoading: false,
-      tempHourseModel: defaultHourseModel,
-      handleCurrentChange(page?: any) {
-        dataMap.getList(page)
-      },
-      handleSizeChange(val: any) {
-        dataMap.getList(null, null, val)
-      },
-      async getList(page?: any, total?: any, limit?: any) {
-        if (page) {
-          dataMap.listQuery.page = page
-        }
-        if (limit) {
-          dataMap.listQuery.limit = limit
-        }
-        console.log(total)
-        dataMap.listLoading = true
-        // @ts-ignore
-        const data = await getArticles(dataMap.listQuery)
-        dataMap.list = data?.data ?? []
-        console.log({ list: data });
+          if (limit) {
+            dataMap.listQuery.limit = limit
+          }
+          console.log(total)
+          dataMap.listLoading = true
+          // @ts-ignore
+          const data = await getArticles(dataMap.listQuery)
+          dataMap.list = data?.data ?? []
+          console.log({ list: data });
 
-        dataMap.total = data?.data.total ?? 0
+          dataMap.total = (data?.data as any).length
 
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          dataMap.listLoading = false
-        }, 0.5 * 1000)
-      },
-      handleFilter() {
-        dataMap.listQuery.page = 1
-        dataMap.getList()
-      },
-      handleModifyStatus(row: any, status: string) {
-        ElMessage.success({
-          message: '操作成功',
-          type: 'success'
-        })
-        row.status = status
-      },
-      sortChange(data: any) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          dataMap.sortByID(order)
-        }
-      },
-      sortByID(order: string) {
-        if (order === 'ascending') {
-          dataMap.listQuery.sort = '+id'
-        } else {
-          dataMap.listQuery.sort = '-id'
-        }
-        dataMap.handleFilter()
-      },
-      getSortClass(key: string) {
-        const sort = dataMap.listQuery.sort
-        return sort === `+${key}` ? 'ascending' : 'descending'
-      },
-      resetTempHourseModel() {
-        dataMap.tempHourseModel = cloneDeep(defaultHourseModel)
-      },
-      handleCreate() {
-        console.log('添加了')
-        dataMap.resetTempHourseModel()
-        console.log(t('table.create'));
+          // Just to simulate the time of the request
+          setTimeout(() => {
+            dataMap.listLoading = false
+          }, 0.5 * 1000)
+        },
+
+        handleFilter() {
+          dataMap.listQuery.page = 1
+          dataMap.getList()
+        },
+
+        handleModifyStatus(row: any, status: string) {
+          ElMessage.success({
+            message: '操作成功',
+            type: 'success'
+          })
+          row.status = status
+        },
+
+        sortChange(data: any) {
+          const { prop, order } = data
+          if (prop === 'id') {
+            dataMap.sortByID(order)
+          }
+        },
+
+        sortByID(order: string) {
+          if (order === 'ascending') {
+            dataMap.listQuery.sort = '+id'
+          } else {
+            dataMap.listQuery.sort = '-id'
+          }
+          dataMap.handleFilter()
+        },
+
+        getSortClass(key: string) {
+          const sort = dataMap.listQuery.sort
+          return sort === `+${key}` ? 'ascending' : 'descending'
+        },
+
+        resetTempHourseModel() {
+          dataMap.tempHourseModel = cloneDeep(defaultHourseModel)
+        },
+
+        handleCreate() {
+          console.log('添加了')
+          dataMap.resetTempHourseModel()
+          console.log(t('table.create'));
+
+          dataMap.dialogStatus = 'create'
+          dataMap.dialogFormVisible = true
+          nextTick(() => {
+            (dataForm.value as typeof ElForm).clearValidate()
+          })
+        },
+
+        createData() {
+          const form = unref(dataForm)
+          form.validate(async (valid: any) => {
+            if (valid) {
+              const HourseModel = dataMap.tempHourseModel
+              HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
+              const addData = await createArticle(HourseModel)
+
+              if (addData?.data.id) {
+                alert(addData.data.id)
+                console.log(addData)
+                dataMap.list.unshift(addData.data)
+              }
+
+              dataMap.dialogFormVisible = false
+              ElMessage.success({
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
+          })
+        },
+
+        handleUpdate(row: any) {
+          dataMap.tempHourseModel = Object.assign({}, row)
+          dataMap.dialogStatus = 'update'
+          dataMap.dialogFormVisible = true
+          nextTick(() => {
+            (dataForm.value as typeof ElForm).clearValidate()
+          })
+        },
         
-        dataMap.dialogStatus = 'create'
-        dataMap.dialogFormVisible = true
-        nextTick(() => {
-          (dataForm.value as typeof ElForm).clearValidate()
-        })
-      },
-      createData() {
-        const form = unref(dataForm)
-        form.validate(async (valid: any) => {
-          if (valid) {
-            const HourseModel = dataMap.tempHourseModel
-            HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
-            const addData = await createArticle(HourseModel)
+        updateData() {
+          const form = unref(dataForm)
+          form.validate(async (valid: any) => {
+            if (valid) {
+              const tempData = Object.assign({}, dataMap.tempHourseModel)
+              console.log(tempData)
+              const data = await updateArticle(tempData)
 
-            if (addData?.data.id) {
-              alert(addData.data.id)
-              console.log(addData)
-              dataMap.list.unshift(addData.data)
+              console.log(data, '-----------------')
+              if (data) {
+                const index = dataMap.list.findIndex(
+                  (v: { id: any }) => v.id === data.data.id
+                )
+                dataMap.list.splice(index, 1, data.data)
+              }
+
+              dataMap.dialogFormVisible = false
+              ElMessage.success({
+                message: '更新成功',
+                type: 'success',
+                duration: 2000
+              })
             }
+          })
+        },
 
-            dataMap.dialogFormVisible = false
-            ElMessage.success({
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          }
-        })
-      },
+        handleDelete(row: any, index: number) {
+          ElMessage.success({
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          dataMap.list.splice(index, 1)
+        },
 
-      handleUpdate(row: any) {
-        dataMap.tempHourseModel = Object.assign({}, row)
-        dataMap.dialogStatus = 'update'
-        dataMap.dialogFormVisible = true
-        nextTick(() => {
-          (dataForm.value as typeof ElForm).clearValidate()
-        })
-      },
-      updateData() {
-        const form = unref(dataForm)
-        form.validate(async (valid: any) => {
-          if (valid) {
-            const tempData = Object.assign({}, dataMap.tempHourseModel)
-            console.log(tempData)
-            const data = await updateArticle(tempData)
+        async handleGetPageviews(pageviews: string) {
+          const data = await getPageviews({ pageviews })
+          dataMap.pageviewsData = data?.data.pageviews
+          dataMap.dialogPageviewsVisible = true
+        },
 
-            console.log(data, '-----------------')
-            if (data) {
-              const index = dataMap.list.findIndex(
-                (v: { id: any }) => v.id === data.data.id
-              )
-              dataMap.list.splice(index, 1, data.data)
-            }
+        handleDownload() {
+          dataMap.downloadLoading = true
+          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+          const filterVal = [
+            'timestamp',
+            'title',
+            'type',
+            'importance',
+            'status'
+          ]
+          const data = formatJson(filterVal, dataMap.list)
+          exportJson2Excel(tHeader, data, 'table-list')
+          dataMap.downloadLoading = false
+        },
 
-            dataMap.dialogFormVisible = false
-            ElMessage.success({
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          }
-        })
-      },
-      handleDelete(row: any, index: number) {
-        ElMessage.success({
-          message: 'Delete Successfully',
-          type: 'success',
-          duration: 2000
-        })
-        dataMap.list.splice(index, 1)
-      },
-      async handleGetPageviews(pageviews: string) {
-        const data = await getPageviews({ pageviews })
-        dataMap.pageviewsData = data?.data.pageviews
-        dataMap.dialogPageviewsVisible = true
-      },
-      handleDownload() {
-        dataMap.downloadLoading = true
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = [
-          'timestamp',
-          'title',
-          'type',
-          'importance',
-          'status'
-        ]
-        const data = formatJson(filterVal, dataMap.list)
-        exportJson2Excel(tHeader, data, 'table-list')
-        dataMap.downloadLoading = false
-      },
-      typeFilter: (type: string) => {
-        return calendarTypeKeyValue[type]
-      }
-    })
+        typeFilter: (type: string) => {
+          return calendarTypeKeyValue[type]
+        }
+      });
+
     onMounted(() => {
       console.log(typeof ElForm)
       dataMap.getList(null, null, 20)
     })
+
     return { t, ...toRefs(dataMap), dataForm }
   }
 })
@@ -626,5 +646,4 @@ export default defineComponent({
   height: 100px;
   /* width: 100px; */
   margin-right: 15px;
-}
-</style>
+}</style>

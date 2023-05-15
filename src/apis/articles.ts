@@ -11,8 +11,9 @@ import { ContentType, Method } from 'axios-mapper'
 import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
-export const defaultHourseModel: HourseModel = {
+export const defaultHourseModel = {
   id: 0,
+  filist:[{fileName: "",url:""}],
   "preview_image": "",
   "name": "",
   "desc": "日当たりのよいお庭と吹き抜けリビングが開放的！大きな収納と使いやすい水回りの家事ラク動線の家！",
