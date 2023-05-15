@@ -179,7 +179,11 @@ export default {
       update: '次回更新予定日',
       category: '类别',
       swiper_number: '轮播区域',
-      label: 'ラベル'
+      label: 'ラベル',
+      pic: '画像',
+      pic_desc: '画像の説明',
+      pic_desc_tips: `各画像の説明が完了したら & で区切ります。`
+
       
   
     },

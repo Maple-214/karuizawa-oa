@@ -289,37 +289,39 @@
       :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" />
 
 
-      <!-- 弹窗 -->
+    <!-- 弹窗 -->
 
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="100px">
+
         <el-form-item :label="t('table.swiper_number')" prop="swiper_number">
           <el-select v-model="tempHourseModel.swiper_number" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="t('table.date')" prop="timestamp">
-          <el-date-picker v-model="tempHourseModel.timestamp" type="datetime" placeholder="Please pick a date" />
+
+        <el-form-item v-for="item in EleItemArr" :key="item" :label="t(`table.${item.key}`)" :prop="item.key">
+          <el-input v-model="tempHourseModel[item.key]" />
         </el-form-item>
-        <el-form-item :label="t('table.title')" prop="title">
-          <el-input v-model="tempHourseModel.title" />
+        
+
+        <el-form-item :label="t('table.preview_image')">
+          <Upload :handlerUploadOne="handlerUploadOne" :filist="tempHourseModel.filelist" :multiple="false" limit="1" />
         </el-form-item>
-        <el-form-item :label="t('table.status')">
-          <el-select v-model="tempHourseModel.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="t('table.importance')">
-          <el-rate v-model="tempHourseModel.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3"
-            style="margin-top: 8px" />
-        </el-form-item>
-        <el-form-item :label="t('table.remark')">
-          <el-input v-model="tempHourseModel.abstractContent" :autosize="{ minRows: 2, maxRows: 4 }" type="textarea"
-            placeholder="Please input" />
-        </el-form-item>
-        <el-form-item :label="t('table.remark')">
-          <Upload :handlerUpload="handlerUpload" />
-        </el-form-item>
+
+        <div class="form-pic-desc-container">
+          <h3>{{ t('table.indoor_map_desc') }}</h3>
+          <el-form-item :label="t('table.pic')">
+            <Upload :handlerUploadMany="handlerUploadMany" :filist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
+          </el-form-item>
+
+          <el-form-item :label="t('table.pic_desc')" prop="pic_desc">
+            <el-input v-model="tempHourseModel.pic_desc" />
+            <el-link disabled="true" :underline="false" tag="span"  type="warning">{{ t('table.pic_desc_tips') }}</el-link>
+          </el-form-item>
+        </div>
+
+        
       </el-form>
       <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -370,6 +372,7 @@ import { HourseModel } from '@/model/hourseModel'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import { useI18n } from 'vue-i18n'
+import { objectToArray } from '../../utils/formdata'
 import Upload from './dynamic-table/components/Upload.vue'
 export default defineComponent({
   components: {
@@ -408,7 +411,7 @@ export default defineComponent({
           type: undefined,
           sort: '+id'
         },
-
+        EleItemArr: objectToArray(defaultHourseModel),
         calendarTypeOptions: calendarTypeOptions,
         sortOptions: [
           { label: 'ID Ascending', key: '+id' },
@@ -427,9 +430,10 @@ export default defineComponent({
         dialogPageviewsVisible: false,
         pageviewsData: [],
         rules: {
-          // type: [ { required: true, message: 'type is required', trigger: 'change' }],
-          // timestamp: [{ required: true,message: 'timestamp is required',trigger: 'change'}],
-          // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+          swiper_number: [{ required: true, message: 'swiper_number is required', trigger: 'change' }],
+          name: [{ required: true, message: 'title is required', trigger: 'blur' }],
+          pic_desc: [{ required: true, message: 'pic_desc is required', trigger: 'blur' }],
+
         },
         downloadLoading: false,
         tempHourseModel: defaultHourseModel,
@@ -437,12 +441,20 @@ export default defineComponent({
         handleCurrentChange(page?: any) {
           dataMap.getList(page)
         },
+        
 
-        handlerUpload(file: any) {
-          dataMap.tempHourseModel.filist = [file]
-
+        handlerUploadOne(file: {filename:'',url:''}) {
+          const _Arr = cloneDeep(dataMap.tempHourseModel.filelist).splice(1)
+          _Arr.push({filename: file.filename, url: file.url})
+          dataMap.tempHourseModel.filelist = _Arr
+          console.log({ss: dataMap.tempHourseModel.filelist});
+          
         },
-
+        handlerUploadMany(file: {filename:'',url:''}) {
+          dataMap.tempHourseModel.indoor_map_desc.push(file)
+          console.log({sw: dataMap.tempHourseModel.indoor_map_desc});
+          
+        },
         handleSizeChange(val: any) {
           dataMap.getList(null, null, val)
         },
@@ -507,11 +519,15 @@ export default defineComponent({
           dataMap.tempHourseModel = cloneDeep(defaultHourseModel)
         },
 
-        handleCreate() {
-          console.log('添加了')
-          dataMap.resetTempHourseModel()
-          console.log(t('table.create'));
+        resetEleItemArr() {
+          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','','','','','','','','','','',]
+          dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
+        },
 
+        handleCreate() {
+          dataMap.resetTempHourseModel()
+          // console.log({sss:cloneDeep(objectToArray(defaultHourseModel))});
+          dataMap.resetEleItemArr()
           dataMap.dialogStatus = 'create'
           dataMap.dialogFormVisible = true
           nextTick(() => {
@@ -551,7 +567,7 @@ export default defineComponent({
             (dataForm.value as typeof ElForm).clearValidate()
           })
         },
-        
+
         updateData() {
           const form = unref(dataForm)
           form.validate(async (valid: any) => {
@@ -646,4 +662,13 @@ export default defineComponent({
   height: 100px;
   /* width: 100px; */
   margin-right: 15px;
-}</style>
+}
+.form-pic-desc-container {
+  padding: 10px;
+  border: 1px solid skyblue;
+  margin-bottom: 20px;
+}
+.form-pic-desc-container h3 {
+  text-align: center;
+}
+</style>

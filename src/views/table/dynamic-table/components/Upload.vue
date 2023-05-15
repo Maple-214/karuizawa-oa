@@ -1,18 +1,9 @@
 <template>
-    <!-- <el-form>
-        <el-upload :limit="limit" action="" accept="image/*" :on-change="uploadFile" list-type="picture-card"
-            :auto-upload="false" :file-list="fileList" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove" ref="upload" class="avatar-uploader" :disabled="disabled">
-            <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog width="30%" :visible.sync="dialogVisible">
-            <img width="100%" :src="imgUrl.url" alt />
-        </el-dialog>
-    </el-form> -->
     <el-form>
-        <el-upload :limit="1" action="http://192.168.1.48:3300/upload" accept="image/*" :on-change="uploadFile" list-type="picture-card"
-            :auto-upload="false" :file-list="fileList" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove" ref="upload" class="avatar-uploader" :disabled="disabled">
+        <el-upload :limit="limit" :multiple="multiple" action="http://192.168.1.48:3300/upload" accept="image/*"
+            :on-change="uploadFile" list-type="picture-card" :auto-upload="false" :file-list="fileList"
+            :on-exceed="handleExceed"  :on-remove="handleRemove" ref="upload"
+            class="avatar-uploader" :disabled="disabled">
             <i class="el-icon-plus"></i>
         </el-upload>
     </el-form>
@@ -25,9 +16,20 @@ import { useStore } from '@/store'
 export default {
     props: {
         limit: Number,
-        fileList: Array,
+        fileList: {
+            type: Array,
+            default: []
+        },
         disabled: Boolean,
-        handlerUpload: Function
+        handlerUploadOne: {
+            type: Function,
+            default: () => {}
+        },
+        handlerUploadMany: {
+            type: Function,
+            default: () => {}
+        },
+        multiple: Boolean
     },
     data() {
         return {
@@ -44,26 +46,18 @@ export default {
             else this.showUpload = false;
         },
     },
-    onMounted () {
-        console.log({fileList});
-
+    onMounted() {
+        // console.log({fileList});
+        console.log({ ttt: this.props });
     },
     methods: {
         //文件列表移除文件时的函数
         handleRemove(file, fileList) {
             console.log({ file });
-            const index = this.fileList.findIndex((item) => item === file.uid);
+            const index = this.fileList.findIndex((item) => item === file.url);
             this.imgUrl.splice(index, 1);
             this.$emit("delUrl", this.imgUrl);
             if (fileList.length < this.limit) this.showUpload = false;
-        },
-        //点击文件列表中已上传的文件时的函数
-        handlePictureCardPreview(file) {
-            this.imgUrl.url = file.url;
-            this.dialogVisible = true;
-            this.previewImage = file.url
-            console.log({ url: file.url, dialogVisible: this.dialogVisible });
-
         },
         //这里是不需要直接上传而是通过按钮上传的方法
         // submitUpload() {
@@ -106,25 +100,15 @@ export default {
                     headers: {
                         token: useStore().state.user.token,
                     }
-                }).then(r => r.json()).then(res =>{
-                    // console.log(res);
-                    if(res.msg === "success") {
+                }).then(r => r.json()).then(res => {
+                    if (res.msg === "success") {
                         this.$message.success("上传成功");
-                        this.handlerUpload(res.data)
-
+                        this.handlerUploadOne(res.data)
+                        this.handlerUploadMany(res.data)
                     } else {
                         this.$message.error("上传失败");
                     }
                 })
-                // uploadImg(params).then((res) => {
-                //     //这里返回的数据结构(根据自己返回结构进行修改)
-                //     if (res.data.status === 1) {
-                //         this.$message.success("上传成功");
-                //         this.imgUrl = res.data;
-                //         //调用父组件的方法来传递图片参数
-                //         this.$emit("getUrl", this.imgUrl);
-                //     } else this.$message.error("上传失败");
-                // });
             }
         },
         //文件超出个数限制时的函数
@@ -155,19 +139,24 @@ export default {
 }
 
 .avatar-uploader>.el-upload-list {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .avatar-uploader>.el-upload-list>.el-upload-list__item {
     width: 200px;
     height: 200px;
-    display: block;
+    margin-right: 10px;
 }
 
 .avatar-uploader>.el-upload-list>.el-upload-list__item>img {
     width: 200px;
     height: 200px;
     border-radius: 0px;
+}
+
+.el-upload-list--picture-card .el-upload-list__item-actions:hover .el-upload-list__item-preview {
+    display: none;
 }
 </style>
   
