@@ -177,15 +177,13 @@ export default {
       legal_restrictions: '法令制限',
       parking: '駐車場',
       update: '次回更新予定日',
-      category: '类别',
       swiper_number: '轮播区域',
-      label: 'ラベル',
+      tag: 'タグ',
       pic: '画像',
       pic_desc: '画像の説明',
-      pic_desc_tips: `各画像の説明が完了したら & で区切ります。`
-
-      
-  
+      pic_desc_tips: `各画像の説明が完了したら & で区切ります。`,
+      tag_tips: '各タグは & で区切ります',
+      new_hourse: '新着'
     },
     example: {
       warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

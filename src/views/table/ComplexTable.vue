@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column :label="t('table.preview_image')" width="180px" align="center">
         <template #default="{ row }">
-          <img height="120" :src="row.preview_image" alt="">
+          <img :v-show="row.preview_image[0]" height="120" :src="row.preview_image[0]?.url" alt="">
         </template>
       </el-table-column>
       <el-table-column :label="t('table.swiper_number')" width="80px" align="center">
@@ -106,7 +106,7 @@
         <template #default="{ row }">
           <div class="table-img-container">
             <div class="table-img-box" v-for="item in row.indoor_map_desc" :key="item">
-              <img class="table-img" :src="item.src" :alt="item.desc" srcset="">
+              <img class="table-img" :src="item.url" :alt="item.desc" srcset="">
               <span class="table-desc">{{ item.desc }}</span>
             </div>
           </div>
@@ -202,6 +202,11 @@
           <span>{{ row.landmark }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="t('table.new_hourse')" align="center" width="95">
+        <template #default="{ row }">
+          <span>{{ row.new_hourse }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="t('table.land_readjustment')" align="center" width="95">
         <template #default="{ row }">
           <span>{{ row.land_readjustment }}</span>
@@ -249,10 +254,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="t('table.label')" align="center" width="130" class-name="fixed-width">
+      <el-table-column :label="t('table.tag')" align="center" width="330" class-name="fixed-width">
         <template #default="{ row, $index }">
-          <!-- <span>{{ row.label }}</span> -->
-
+          <el-tag v-for="item in row.tag" class="ml-2 table-tag" :key="item" type="success">
+            {{ item }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -292,31 +298,36 @@
     <!-- 弹窗 -->
 
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="100px">
+      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="auto" status-icon="true">
 
-        <el-form-item :label="t('table.swiper_number')" prop="swiper_number">
+        <el-form-item :label="t('table.swiper_number') + '：'" prop="swiper_number">
           <el-select v-model="tempHourseModel.swiper_number" class="filter-item" placeholder="Please select">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
 
-        <el-form-item v-for="item in EleItemArr" :key="item" :label="t(`table.${item.key}`)" :prop="item.key">
+        <el-form-item v-for="item in EleItemArr" :key="item" :label="t(`table.${item.key}`) + '：'" :prop="item.key">
           <el-input v-model="tempHourseModel[item.key]" />
+        </el-form-item>
+
+        <el-form-item :label="t('table.tag') + '：'" prop="tag">
+            <el-input v-model="tempHourseModel.tag" />
+            <el-link disabled="true" :underline="false" tag="span"  type="warning">{{ t('table.tag_tips') }}</el-link>
         </el-form-item>
         
 
-        <el-form-item :label="t('table.preview_image')">
-          <Upload :handlerUploadOne="handlerUploadOne" :filist="tempHourseModel.filelist" :multiple="false" limit="1" />
+        <el-form-item :label="t('table.preview_image') + '：'">
+          <Upload :handlerUploadRemoveOne="handlerUploadRemoveOne" :handlerUploadOne="handlerUploadOne" :filelist="tempHourseModel.filelist" :multiple="false" limit="1" />
         </el-form-item>
 
         <div class="form-pic-desc-container">
           <h3>{{ t('table.indoor_map_desc') }}</h3>
-          <el-form-item :label="t('table.pic')">
-            <Upload :handlerUploadMany="handlerUploadMany" :filist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
+          <el-form-item :label="t('table.pic') + '：'">
+            <Upload :handlerUploadRemoveMany="handlerUploadRemoveMany" :handlerUploadMany="handlerUploadMany" :filelist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
           </el-form-item>
 
-          <el-form-item :label="t('table.pic_desc')" prop="pic_desc">
-            <el-input v-model="tempHourseModel.pic_desc" />
+          <el-form-item :label="t('table.pic_desc') + '：'" prop="tagFormData">
+            <el-input v-model="tempHourseModel.tagFormData" />
             <el-link disabled="true" :underline="false" tag="span"  type="warning">{{ t('table.pic_desc_tips') }}</el-link>
           </el-form-item>
         </div>
@@ -340,9 +351,8 @@
         <el-table-column prop="pageviews" label="Pageviews" />
       </el-table>
       <span class="dialog-footer">
-        <el-button type="primary" @click="dialogPageviewsVisible = false">{{
-          t("table.confirm")
-        }}</el-button>
+        <el-button type="primary" @click="dialogPageviewsVisible = false">
+        {{t("table.confirm")}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -433,28 +443,44 @@ export default defineComponent({
           swiper_number: [{ required: true, message: 'swiper_number is required', trigger: 'change' }],
           name: [{ required: true, message: 'title is required', trigger: 'blur' }],
           pic_desc: [{ required: true, message: 'pic_desc is required', trigger: 'blur' }],
+          
 
         },
         downloadLoading: false,
-        tempHourseModel: defaultHourseModel,
+        tempHourseModel: {...defaultHourseModel,tagFormData:''},
+
 
         handleCurrentChange(page?: any) {
           dataMap.getList(page)
         },
         
-
         handlerUploadOne(file: {filename:'',url:''}) {
           const _Arr = cloneDeep(dataMap.tempHourseModel.filelist).splice(1)
+          // @ts-ignore
           _Arr.push({filename: file.filename, url: file.url})
           dataMap.tempHourseModel.filelist = _Arr
           console.log({ss: dataMap.tempHourseModel.filelist});
-          
         },
         handlerUploadMany(file: {filename:'',url:''}) {
+          // @ts-ignore
           dataMap.tempHourseModel.indoor_map_desc.push(file)
-          console.log({sw: dataMap.tempHourseModel.indoor_map_desc});
+        },
+
+        handlerUploadRemoveOne(name: any) {
+          const Arr = cloneDeep(dataMap.tempHourseModel.filelist).filter(i => (i.filename !== name))
+          console.log(dataMap.tempHourseModel.filelist);
+          
+
+          dataMap.tempHourseModel.filelist = Arr
           
         },
+        handlerUploadRemoveMany(name: string) {
+          const Arr = cloneDeep(dataMap.tempHourseModel.indoor_map_desc).slice(1).filter(i => (i.filename !== name))
+          console.log({name,Arr});
+          
+          dataMap.tempHourseModel.indoor_map_desc = Arr
+        },
+
         handleSizeChange(val: any) {
           dataMap.getList(null, null, val)
         },
@@ -468,14 +494,11 @@ export default defineComponent({
           }
           console.log(total)
           dataMap.listLoading = true
-          // @ts-ignore
           const data = await getArticles(dataMap.listQuery)
+          // @ts-ignore
           dataMap.list = data?.data ?? []
-          console.log({ list: data });
-
           dataMap.total = (data?.data as any).length
 
-          // Just to simulate the time of the request
           setTimeout(() => {
             dataMap.listLoading = false
           }, 0.5 * 1000)
@@ -516,17 +539,16 @@ export default defineComponent({
         },
 
         resetTempHourseModel() {
-          dataMap.tempHourseModel = cloneDeep(defaultHourseModel)
+          dataMap.tempHourseModel = {...cloneDeep(defaultHourseModel),filelist:[],indoor_map_desc:[]}
         },
 
         resetEleItemArr() {
-          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','','','','','','','','','','',]
+          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','swiper_number','pic_desc','tag_str','tag','','','','','','',]
           dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
         },
 
         handleCreate() {
           dataMap.resetTempHourseModel()
-          // console.log({sss:cloneDeep(objectToArray(defaultHourseModel))});
           dataMap.resetEleItemArr()
           dataMap.dialogStatus = 'create'
           dataMap.dialogFormVisible = true
@@ -539,15 +561,21 @@ export default defineComponent({
           const form = unref(dataForm)
           form.validate(async (valid: any) => {
             if (valid) {
+              
               const HourseModel = dataMap.tempHourseModel
-              HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
+              // @ts-ignore
+              HourseModel.preview_image = HourseModel.filelist
+              HourseModel.pic_desc = HourseModel.tagFormData
+              console.log({HourseModel});
+              
+              // HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
               const addData = await createArticle(HourseModel)
 
-              if (addData?.data.id) {
-                alert(addData.data.id)
-                console.log(addData)
-                dataMap.list.unshift(addData.data)
-              }
+              // if (addData?.data.id) {
+              //   alert(addData.data.id)
+              //   console.log(addData)
+              //   dataMap.list.unshift(addData.data)
+              // }
 
               dataMap.dialogFormVisible = false
               ElMessage.success({
@@ -560,7 +588,15 @@ export default defineComponent({
         },
 
         handleUpdate(row: any) {
-          dataMap.tempHourseModel = Object.assign({}, row)
+          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','swiper_number','pic_desc','tag_str','tag','','','','','','',]
+          dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
+
+          const _obj = cloneDeep({...row,filelist:[row.preview_image],tagFormData:dataMap.tagFormData(row.indoor_map_desc)})
+          console.log({_obj,fff:dataMap.tagFormData(row.indoor_map_desc)});
+          
+          // dataMap.tempHourseModel = Object.assign({}, row)
+          dataMap.tempHourseModel = cloneDeep(_obj,)
+
           dataMap.dialogStatus = 'update'
           dataMap.dialogFormVisible = true
           nextTick(() => {
@@ -572,7 +608,10 @@ export default defineComponent({
           const form = unref(dataForm)
           form.validate(async (valid: any) => {
             if (valid) {
-              const tempData = Object.assign({}, dataMap.tempHourseModel)
+              const tempData = cloneDeep(dataMap.tempHourseModel)
+              // @ts-ignore
+              tempData.preview_image = tempData.filelist
+              // const tempData = Object.assign({}, dataMap.tempHourseModel)
               console.log(tempData)
               const data = await updateArticle(tempData)
 
@@ -626,6 +665,16 @@ export default defineComponent({
 
         typeFilter: (type: string) => {
           return calendarTypeKeyValue[type]
+        },
+
+        tagFormData(originalArray: [{url: string, desc: string, filename?:string}]): string {
+          // 创建一个新数组来存储提取的值
+          const newArray = [];
+          // 使用循环或数组方法提取特定值
+          for (var i = 0; i < originalArray.length; i++) {
+            newArray.push(originalArray[i].desc);
+          }
+          return newArray.join(',')
         }
       });
 
@@ -670,5 +719,8 @@ export default defineComponent({
 }
 .form-pic-desc-container h3 {
   text-align: center;
+}
+.table-tag {
+  margin: 10px;
 }
 </style>

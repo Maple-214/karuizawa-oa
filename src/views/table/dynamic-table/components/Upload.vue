@@ -1,12 +1,10 @@
 <template>
-    <el-form>
-        <el-upload :limit="limit" :multiple="multiple" action="http://192.168.1.48:3300/upload" accept="image/*"
-            :on-change="uploadFile" list-type="picture-card" :auto-upload="false" :file-list="fileList"
-            :on-exceed="handleExceed"  :on-remove="handleRemove" ref="upload"
-            class="avatar-uploader" :disabled="disabled">
-            <i class="el-icon-plus"></i>
-        </el-upload>
-    </el-form>
+    <el-upload v-show="showUpload" :limit="limit" :multiple="multiple" action="http://192.168.1.48:3300/upload" accept="image/*"
+        :on-change="uploadFile" list-type="picture-card" :auto-upload="false" :file-list="filelist"
+        :on-exceed="handleExceed"  :on-remove="handleRemove" :handlerUploadRemove="handlerUploadRemove" :handlerUploadRemoveOne="handlerUploadRemoveMany" ref="upload"
+        class="avatar-uploader" :disabled="disabled">
+        <i class="el-icon-plus"></i>
+    </el-upload>
 </template>
   
 <script>
@@ -16,7 +14,7 @@ import { useStore } from '@/store'
 export default {
     props: {
         limit: Number,
-        fileList: {
+        filelist: {
             type: Array,
             default: []
         },
@@ -29,40 +27,40 @@ export default {
             type: Function,
             default: () => {}
         },
+        handlerUploadRemoveOne: {
+            type: Function,
+            default: () => {}
+        },
+        handlerUploadRemoveMany: {
+            type: Function,
+            default: () => {}
+        },
         multiple: Boolean
     },
     data() {
         return {
-            showUpload: false, //控制limit最大值之后 关闭上传按钮
-            dialogVisible: false, //查看图片弹出框
-            imgUrl: [], //上传图片后地址合集,
-            previewImage: ''
+            showUpload: true, //控制limit最大值之后 关闭上传按钮
         };
     },
     //监听上传图片的数组(为了处理修改时,自动渲染问题,和上传按钮消失问题);
     watch: {
         fileList(newName, oldName) {
-            if (newName.length == this.limit) this.showUpload = true;
-            else this.showUpload = false;
+            // if (newName.length == this.limit) this.showUpload = true;
+            // else this.showUpload = false;
         },
-    },
+    }, 
     onMounted() {
-        // console.log({fileList});
         console.log({ ttt: this.props });
     },
     methods: {
         //文件列表移除文件时的函数
-        handleRemove(file, fileList) {
-            console.log({ file });
-            const index = this.fileList.findIndex((item) => item === file.url);
-            this.imgUrl.splice(index, 1);
-            this.$emit("delUrl", this.imgUrl);
-            if (fileList.length < this.limit) this.showUpload = false;
+        handleRemove(file, filelists = []) {
+            console.log(888888888);
+            console.log({ file,filelists});
+            const index = this.filelists?.findIndex((item) => item === file.url);
+            this.handlerUploadRemoveOne(file.name || file.filename)
+            this.handlerUploadRemoveMany(file.name)
         },
-        //这里是不需要直接上传而是通过按钮上传的方法
-        // submitUpload() {
-        //     this.$refs.upload.submit();
-        // },
         //文件状态改变时的函数(主要逻辑函数)
         uploadFile(e, fileList) {
             //判断用户上传最大数量限制,来让上传按钮消失
@@ -105,6 +103,7 @@ export default {
                         this.$message.success("上传成功");
                         this.handlerUploadOne(res.data)
                         this.handlerUploadMany(res.data)
+                        console.log({ooo:this.fileList,ll:this.limit});
                     } else {
                         this.$message.error("上传失败");
                     }

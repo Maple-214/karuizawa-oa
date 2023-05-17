@@ -8,52 +8,49 @@ import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
 export const defaultHourseModel = {
-  id: 0,
   filelist: [{filename:'',url:''}],
-  "preview_image": "",
-  "name": "",
-  "desc": "",
-  "station": "",
-  "price": "",
-  "construction_area": "",
-  "Land_area": "",
-  "transportation": "",
-  "House_structure": "",
-  "detail_desc": "",
+  preview_image: {url:'',filename:''},
+  name: "",
+  desc: "",
+  station: "",
+  price: "",
+  construction_area: "",
+  Land_area: "",
+  transportation: "",
+  House_structure: "",
+  detail_desc: "",
   indoor_map_desc: [{src: "",desc: "",filename:''}],
-  "location": "",
-  "private_road": "",
-  "setback": "",
-  "building_coverage_ratio": "",
-  "floor_area_ratio": "",
-  "facility": "",
-  "other_equipment": "",
-  "current_situation": "",
-  "mode_of_transaction": "",
-  "delivery_conditions": "",
-  "delivery_time": "",
-  "time": "",
-  "land_rights": "",
-  "remarks": "",
-  "other_expenses": "",
-  "city_planning_area_division": "",
-  "landmark": "",
-  "land_readjustment": "",
-  "ticity_planning_roadme": " ",
-  "use_area": "",
-  "terrain": "",
-  "contact_situation": "",
-  "main_approach": "",
-  "legal_restrictions": "",
-  "parking": "",
-  "update": "",
-  "category": "",
-  "swiper_number": "",
-  // "fav": false,
-  "regional_district_block": "",
-  // structure_layers: '',
-  label: [],
-  pic_desc:''
+  location: "",
+  private_road: "",
+  setback: "",
+  building_coverage_ratio: "",
+  floor_area_ratio: "",
+  facility: "",
+  other_equipment: "",
+  current_situation: "",
+  mode_of_transaction: "",
+  delivery_conditions: "",
+  delivery_time: "",
+  time: "",
+  land_rights: "",
+  remarks: "",
+  other_expenses: "",
+  city_planning_area_division: "",
+  landmark: "",
+  land_readjustment: "",
+  ticity_planning_roadme: " ",
+  use_area: "",
+  terrain: "",
+  contact_situation: "",
+  main_approach: "",
+  legal_restrictions: "",
+  parking: "",
+  update: "",
+  swiper_number: "",
+  regional_district_block: "",
+  tag: [],
+  pic_desc:'',
+  new_hourse: null
 }
 
 export const getArticles = (params: any) => {
@@ -61,15 +58,15 @@ export const getArticles = (params: any) => {
 }
 
 export const getArticle = (params: any) => {
-  return https().request<RootObject<HourseModel>>('article/articleInfo', Method.GET, params, ContentType.form)
+  return https().request<RootObject<HourseModel>>('artupdateArticleicle/articleInfo', Method.GET, params, ContentType.form)
 }
 
 export const createArticle = (data: any) => {
-  return https().request<RootObject<HourseModel>>('article/createArticle', Method.POST, data, ContentType.json)
+  return https().request<RootObject<HourseModel>>('hourse/createArticle', Method.POST, data, ContentType.json)
 }
 
 export const updateArticle = (params: any) => {
-  return https().request<RootObject<HourseModel>>('article/updateArticle', Method.POST, params, ContentType.json)
+  return https().request<RootObject<HourseModel>>('hourse/updateArticle', Method.POST, params, ContentType.json)
 }
 
 export const deleteArticle = (id: number) => {
