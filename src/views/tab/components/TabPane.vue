@@ -88,7 +88,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 import { getArticles } from '@/apis/articles'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 
 export default defineComponent({
   props: {
@@ -101,7 +101,7 @@ export default defineComponent({
   setup(_, ctx) {
     console.log('tabtabtabtabtabatabtabtab')
     const dataMap = reactive({
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listQuery: {
         page: 1,
         limit: 5,

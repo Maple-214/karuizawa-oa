@@ -11,10 +11,15 @@ import { getLanguage } from '@/utils/cookies'
 
 import elementEnLocale from 'element-plus/lib/locale/lang/en'
 import elementZhLocale from 'element-plus/lib/locale/lang/zh-cn'
+import elementJaLocale from 'element-plus/lib/locale/lang/ja'
+
+
 
 // User defined lang
 import enLocale from './en'
 import zhLocale from './zh-cn'
+import jaLocale from './ja'
+
 
 const messages = {
   en: {
@@ -24,6 +29,10 @@ const messages = {
   'zh-cn': {
     ...zhLocale,
     ...elementZhLocale
+  },
+  'ja': {
+    ...jaLocale,
+    ...elementJaLocale
   }
 }
 

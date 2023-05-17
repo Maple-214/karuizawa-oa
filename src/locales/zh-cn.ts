@@ -1,9 +1,5 @@
 /*
- * @Description:
- * @Author: ZY
- * @Date: 2020-12-28 17:18:24
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-20 15:18:01
+ * @Description: 中文语言包
  */
 
 export default {
@@ -139,7 +135,29 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    // 
+    preview_image: '预览图',
+    name: '名称',
+    desc: '描述',
+    station: '车站',
+    price: '价格',
+    floor_plan: '平面图',
+    construction_area: '建筑面积',
+    Land_area: '土地面积',
+    transportation: '交通',
+    House_structure: '房屋结构',
+    detail_desc: '详情页描述',
+    indoor_map_desc: '室内图 & 描述',
+    location: '所在地',
+    structure_layers: '结构/层数',
+    private_road: '私家路负担区',
+
+    
+
+    
+
+
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

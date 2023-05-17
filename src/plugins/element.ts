@@ -1,33 +1,6 @@
 /*
  * @Description: element 组件
- * @Author: ZY
- * @Date: 2020-12-25 08:45:49
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 13:25:55
  */
-
-// import {
-//   ElButton,
-//   ElSelect,
-//   ElBreadcrumb,
-//   ElBreadcrumbItem,
-//   ElIcon,
-//   ElDropdown,
-//   ElDropdownMenu,
-//   ElDropdownItem,
-//   ElPopover,
-//   ElMessage,
-//   ElForm,
-//   ElFormItem,
-//   ElLoading,
-//   ElInput,
-//   ElTooltip,
-//   ElDialog,
-//   ElScrollbar,
-//   ElMenu,
-//   ElMenuItem,
-//   ElSubmenu
-// } from 'element-plus'
 
 /**
  *  系统的全局设置size，全部加载方便设置。

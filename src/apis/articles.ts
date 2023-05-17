@@ -1,55 +1,79 @@
 /*
  * @Description:表格数据接口
- * @Autor: scy😊
- * @Date: 2021-01-12 11:31:47
- * @LastEditors: scy😊
- * @LastEditTime: 2021-01-23 17:15:26
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
 import { ContentType, Method } from 'axios-mapper'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
-export const defaultArticleModel: ArticleModel = {
-  id: 0,
-  status: 'draft',
-  title: '',
-  fullContent: '',
-  abstractContent: '',
-  sourceURL: '',
-  imageURL: '',
-  timestamp: 0,
-  platforms: ['a-platform'],
-  disableComment: false,
-  importance: 0,
-  author: '',
-  reviewer: '',
-  type: '',
-  pageviews: 0
+export const defaultHourseModel = {
+  filelist: [{filename:'',url:''}],
+  preview_image: {url:'',filename:''},
+  name: "",
+  desc: "",
+  station: "",
+  price: "",
+  construction_area: "",
+  Land_area: "",
+  transportation: "",
+  House_structure: "",
+  detail_desc: "",
+  indoor_map_desc: [{src: "",desc: "",filename:''}],
+  location: "",
+  private_road: "",
+  setback: "",
+  building_coverage_ratio: "",
+  floor_area_ratio: "",
+  facility: "",
+  other_equipment: "",
+  current_situation: "",
+  mode_of_transaction: "",
+  delivery_conditions: "",
+  delivery_time: "",
+  time: "",
+  land_rights: "",
+  remarks: "",
+  other_expenses: "",
+  city_planning_area_division: "",
+  landmark: "",
+  land_readjustment: "",
+  ticity_planning_roadme: " ",
+  use_area: "",
+  terrain: "",
+  contact_situation: "",
+  main_approach: "",
+  legal_restrictions: "",
+  parking: "",
+  update: "",
+  swiper_number: "",
+  regional_district_block: "",
+  tag: [],
+  pic_desc:'',
+  new_hourse: null
 }
 
 export const getArticles = (params: any) => {
-  return https().request<RootObject<ArticleList<ArticleModel>>>('article/articles', Method.POST, params, ContentType.json)
+  return https().request<RootObject<ArticleList<HourseModel>>>('hourse/hourses', Method.GET, params, ContentType.json)
 }
 
 export const getArticle = (params: any) => {
-  return https().request<RootObject<ArticleModel>>('article/articleInfo', Method.GET, params, ContentType.form)
+  return https().request<RootObject<HourseModel>>('artupdateArticleicle/articleInfo', Method.GET, params, ContentType.form)
 }
 
 export const createArticle = (data: any) => {
-  return https().request<RootObject<ArticleModel>>('article/createArticle', Method.POST, data, ContentType.json)
+  return https().request<RootObject<HourseModel>>('hourse/createArticle', Method.POST, data, ContentType.json)
 }
 
 export const updateArticle = (params: any) => {
-  return https().request<RootObject<ArticleModel>>('article/updateArticle', Method.POST, params, ContentType.json)
+  return https().request<RootObject<HourseModel>>('hourse/updateArticle', Method.POST, params, ContentType.json)
 }
 
 export const deleteArticle = (id: number) => {
-  return https().request<RootObject<ArticleModel>>(`articles/${id}`, Method.POST, undefined, ContentType.json)
+  return https().request<RootObject<HourseModel>>(`articles/${id}`, Method.POST, undefined, ContentType.json)
 }
 
-export interface Pageviews{
+export interface Pageviews {
   pageviews: any
 }
 

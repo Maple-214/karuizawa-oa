@@ -155,7 +155,7 @@ import {
   computed
 } from 'vue'
 import { isValidURL } from '@/utils/validate'
-import { getArticle, defaultArticleModel } from '@/apis/articles'
+import { getArticle, defaultHourseModel } from '@/apis/articles'
 import { getUsers } from '@/apis/user'
 import { TagView } from '@/store/modules/tagsview/state'
 import MaterialInput from '@/components/material-input/Index.vue'
@@ -234,7 +234,7 @@ export default defineComponent({
     const dataMap = reactive({
       router: useRouter(),
       route: route,
-      postForm: Object.assign({}, defaultArticleModel),
+      postForm: Object.assign({}, defaultHourseModel),
       loading: false,
       userListOptions: [],
       value: '',

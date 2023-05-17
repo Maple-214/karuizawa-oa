@@ -114,7 +114,7 @@
 
 <script lang="ts">
 import { reactive, defineComponent, nextTick, onMounted, toRefs } from 'vue'
-import { ArticleModel } from '@/model/articleModel'
+import { HourseModel } from '@/model/hourseModel.js'
 
 import Sortable from 'sortablejs'
 import { getArticles } from '@/apis/articles'
@@ -124,7 +124,7 @@ export default defineComponent({
     let sortable: Sortable | null = null
     const { t } = useI18n()
     const dataMap = reactive({
-      list: Array<ArticleModel>(),
+      list: Array<HourseModel>(),
       listLoading: true,
       total: 0,
       oldList: [0],
@@ -141,7 +141,7 @@ export default defineComponent({
           dataMap.listLoading = false
         }, 0.5 * 1000)
         dataMap.total = data?.data.total ?? 0
-        dataMap.oldList = dataMap.list.map((v) => v.id)
+        dataMap.oldList = dataMap.list.map((v: { id: any }) => v.id)
         dataMap.newList = this.oldList.slice()
         nextTick(() => {
           this.setSort()
@@ -153,7 +153,7 @@ export default defineComponent({
         )[0] as HTMLElement
         sortable = Sortable.create(el, {
           ghostClass: 'sortable-ghost', // Class name for the drop placeholder
-          onEnd: (evt) => {
+          onEnd: (evt: { oldIndex: any; newIndex: any }) => {
             if (
               typeof evt.oldIndex !== 'undefined' &&
               typeof evt.newIndex !== 'undefined'
