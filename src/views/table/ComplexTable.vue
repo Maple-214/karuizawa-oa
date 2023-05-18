@@ -317,14 +317,14 @@
         </el-form-item>
 
 
-        <el-form-item :label="t('table.preview_image') + '：'">
+        <el-form-item :label="t('table.preview_image') + '：'" prop="filelist">
           <Upload :handlerUploadRemoveOne="handlerUploadRemoveOne" :handlerUploadOne="handlerUploadOne"
             :filelist="tempHourseModel.filelist" :multiple="false" limit="1" />
         </el-form-item>
 
         <div class="form-pic-desc-container">
           <h3>{{ t('table.indoor_map_desc') }}</h3>
-          <el-form-item :label="t('table.pic') + '：'">
+          <el-form-item :label="t('table.pic') + '：'" prop="indoor_map_desc">
             <Upload :handlerUploadRemoveMany="handlerUploadRemoveMany" :handlerUploadMany="handlerUploadMany"
               :filelist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
           </el-form-item>
@@ -444,6 +444,8 @@ export default defineComponent({
         pageviewsData: [],
         rules: {
           swiper_number: [{ required: true, message: 'swiper_number is required', trigger: 'change' }],
+          filelist: [{ required: true, message: 'preview_image is required', trigger: 'change' }],
+          indoor_map_desc: [{ required: true, message: 'indoor_map_desc is required', trigger: 'change' }],
           name: [{ required: true, message: 'title is required', trigger: 'blur' }],
           pic_desc: [{ required: true, message: 'pic_desc is required', trigger: 'blur' }],
 
@@ -477,11 +479,9 @@ export default defineComponent({
           dataMap.tempHourseModel.filelist = Arr
 
         },
-        handlerUploadRemoveMany(name: string) {
-          const Arr = cloneDeep(dataMap.tempHourseModel.indoor_map_desc).slice(1).filter(i => (i.filename !== name))
-          console.log({ name, Arr });
+        handlerUploadRemoveMany(filelists: any) {
 
-          dataMap.tempHourseModel.indoor_map_desc = Arr
+          dataMap.tempHourseModel.indoor_map_desc = filelists
         },
 
         handleSizeChange(val: any) {

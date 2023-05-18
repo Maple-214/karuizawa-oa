@@ -58,8 +58,10 @@ export default {
             console.log(888888888);
             console.log({ file,filelists});
             // const index = this.filelists?.findIndex((item) => item === file.url);
-            this.handlerUploadRemoveOne(file.name || file.filename)
-            this.handlerUploadRemoveMany(file.name)
+            // this.handlerUploadRemoveOne(file.name || file.filename)
+            // this.handlerUploadRemoveMany(file.name || file.filename)
+            this.handlerUploadRemoveOne(filelists)
+            this.handlerUploadRemoveMany(filelists)
         },
         //文件状态改变时的函数(主要逻辑函数)
         uploadFile(e, fileList) {
