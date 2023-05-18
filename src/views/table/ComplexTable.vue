@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column :label="t('table.preview_image')" width="180px" align="center">
         <template #default="{ row }">
-          <img :v-show="row.preview_image[0]" height="120" :src="row.preview_image[0]?.url" alt="">
+          <img :v-show="row.preview_image" height="120" :src="row.preview_image?.url" alt="">
         </template>
       </el-table-column>
       <el-table-column :label="t('table.swiper_number')" width="80px" align="center">
@@ -616,12 +616,12 @@ export default defineComponent({
               const data = await updateArticle(tempData)
 
               console.log(data, '-----------------')
-              if (data) {
-                const index = dataMap.list.findIndex(
-                  (v: { id: any }) => v.id === data.data.id
-                )
-                dataMap.list.splice(index, 1, data.data)
-              }
+              // if (data) {
+              //   const index = dataMap.list.findIndex(
+              //     (v: { id: any }) => v.id === data.data.id
+              //   )
+              //   dataMap.list.splice(index, 1, data.data)
+              // }
 
               dataMap.dialogFormVisible = false
               ElMessage.success({
@@ -721,6 +721,6 @@ export default defineComponent({
   text-align: center;
 }
 .table-tag {
-  margin: 10px;
+  margin: 3px;
 }
 </style>

@@ -54,7 +54,7 @@ export default defineComponent({
     const { locale } = useI18n()
 
     const state = reactive({
-      languages: [{ name: 'en', value: 'en' }, { name: '中文', value: 'zh-cn' }] as Array<Language>,
+      languages: [{ name: 'en', value: 'en' }, { name: '中文', value: 'zh-cn' }, { name: '日本語', value: 'ja' }] as Array<Language>,
       handleSetLanguage: (lang: string) => {
         locale.value = lang
         store.dispatch(AppActionTypes.ACTION_SET_LANGUAGE, lang)
