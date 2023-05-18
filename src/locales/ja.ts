@@ -182,7 +182,7 @@ export default {
       pic: '画像',
       pic_desc: '画像の説明',
       pic_desc_tips: `各画像の説明が完了したら & で区切ります。`,
-      tag_tips: '各タグは & で区切ります',
+      tag_tips: '各タグは,で区切ります',
       new_hourse: '新着'
     },
     example: {
@@ -224,6 +224,9 @@ export default {
       showSidebarLogo: '显示侧边栏 Logo',
       fixedHeader: '固定 Header',
       sidebarTextTheme: '侧边栏文字主题色'
+    },
+    system: {
+      success: '成功'
     }
   }
   

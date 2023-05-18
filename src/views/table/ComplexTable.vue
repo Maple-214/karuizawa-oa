@@ -298,7 +298,8 @@
     <!-- 弹窗 -->
 
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="auto" status-icon="true">
+      <el-form ref="dataForm" :rules="rules" :model="tempHourseModel" label-position="left" label-width="auto"
+        status-icon="true">
 
         <el-form-item :label="t('table.swiper_number') + '：'" prop="swiper_number">
           <el-select v-model="tempHourseModel.swiper_number" class="filter-item" placeholder="Please select">
@@ -311,28 +312,30 @@
         </el-form-item>
 
         <el-form-item :label="t('table.tag') + '：'" prop="tag">
-            <el-input v-model="tempHourseModel.tag" />
-            <el-link disabled="true" :underline="false" tag="span"  type="warning">{{ t('table.tag_tips') }}</el-link>
+          <el-input v-model="tempHourseModel.tag" />
+          <el-link disabled="true" :underline="false" tag="span" type="warning">{{ t('table.tag_tips') }}</el-link>
         </el-form-item>
-        
+
 
         <el-form-item :label="t('table.preview_image') + '：'">
-          <Upload :handlerUploadRemoveOne="handlerUploadRemoveOne" :handlerUploadOne="handlerUploadOne" :filelist="tempHourseModel.filelist" :multiple="false" limit="1" />
+          <Upload :handlerUploadRemoveOne="handlerUploadRemoveOne" :handlerUploadOne="handlerUploadOne"
+            :filelist="tempHourseModel.filelist" :multiple="false" limit="1" />
         </el-form-item>
 
         <div class="form-pic-desc-container">
           <h3>{{ t('table.indoor_map_desc') }}</h3>
           <el-form-item :label="t('table.pic') + '：'">
-            <Upload :handlerUploadRemoveMany="handlerUploadRemoveMany" :handlerUploadMany="handlerUploadMany" :filelist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
+            <Upload :handlerUploadRemoveMany="handlerUploadRemoveMany" :handlerUploadMany="handlerUploadMany"
+              :filelist="tempHourseModel.indoor_map_desc" :multiple="true" limit="40" />
           </el-form-item>
 
-          <el-form-item :label="t('table.pic_desc') + '：'" prop="tagFormData">
-            <el-input v-model="tempHourseModel.tagFormData" />
-            <el-link disabled="true" :underline="false" tag="span"  type="warning">{{ t('table.pic_desc_tips') }}</el-link>
+          <el-form-item :label="t('table.pic_desc') + '：'" prop="picDescFormData">
+            <el-input v-model="tempHourseModel.picDescFormData" />
+            <el-link disabled="true" :underline="false" tag="span" type="warning">{{ t('table.pic_desc_tips') }}</el-link>
           </el-form-item>
         </div>
 
-        
+
       </el-form>
       <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -352,7 +355,7 @@
       </el-table>
       <span class="dialog-footer">
         <el-button type="primary" @click="dialogPageviewsVisible = false">
-        {{t("table.confirm")}}</el-button>
+          {{ t("table.confirm") }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -443,25 +446,25 @@ export default defineComponent({
           swiper_number: [{ required: true, message: 'swiper_number is required', trigger: 'change' }],
           name: [{ required: true, message: 'title is required', trigger: 'blur' }],
           pic_desc: [{ required: true, message: 'pic_desc is required', trigger: 'blur' }],
-          
+
 
         },
         downloadLoading: false,
-        tempHourseModel: {...defaultHourseModel,tagFormData:''},
+        tempHourseModel: { ...defaultHourseModel, picDescFormData: '' },
 
 
         handleCurrentChange(page?: any) {
           dataMap.getList(page)
         },
-        
-        handlerUploadOne(file: {filename:'',url:''}) {
+
+        handlerUploadOne(file: { filename: '', url: '' }) {
           const _Arr = cloneDeep(dataMap.tempHourseModel.filelist).splice(1)
           // @ts-ignore
-          _Arr.push({filename: file.filename, url: file.url})
+          _Arr.push({ filename: file.filename, url: file.url })
           dataMap.tempHourseModel.filelist = _Arr
-          console.log({ss: dataMap.tempHourseModel.filelist});
+          console.log({ ss: dataMap.tempHourseModel.filelist });
         },
-        handlerUploadMany(file: {filename:'',url:''}) {
+        handlerUploadMany(file: { filename: '', url: '' }) {
           // @ts-ignore
           dataMap.tempHourseModel.indoor_map_desc.push(file)
         },
@@ -469,15 +472,15 @@ export default defineComponent({
         handlerUploadRemoveOne(name: any) {
           const Arr = cloneDeep(dataMap.tempHourseModel.filelist).filter(i => (i.filename !== name))
           console.log(dataMap.tempHourseModel.filelist);
-          
+
 
           dataMap.tempHourseModel.filelist = Arr
-          
+
         },
         handlerUploadRemoveMany(name: string) {
           const Arr = cloneDeep(dataMap.tempHourseModel.indoor_map_desc).slice(1).filter(i => (i.filename !== name))
-          console.log({name,Arr});
-          
+          console.log({ name, Arr });
+
           dataMap.tempHourseModel.indoor_map_desc = Arr
         },
 
@@ -539,19 +542,20 @@ export default defineComponent({
         },
 
         resetTempHourseModel() {
-          dataMap.tempHourseModel = {...cloneDeep(defaultHourseModel),filelist:[],indoor_map_desc:[]}
+          // @ts-ignore
+          dataMap.tempHourseModel = { ...cloneDeep(defaultHourseModel), filelist: [], indoor_map_desc: [] }
         },
 
         resetEleItemArr() {
-          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','swiper_number','pic_desc','tag_str','tag','','','','','','',]
+          const excludesArr = ['id', 'filelist', 'preview_image', 'label', 'indoor_map_desc', 'swiper_number', 'pic_desc', 'tag_str', 'tag', '', '', '', '', '', '',]
           dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
         },
 
         handleCreate() {
-          dataMap.resetTempHourseModel()
-          dataMap.resetEleItemArr()
           dataMap.dialogStatus = 'create'
           dataMap.dialogFormVisible = true
+          dataMap.resetTempHourseModel()
+          dataMap.resetEleItemArr()
           nextTick(() => {
             (dataForm.value as typeof ElForm).clearValidate()
           })
@@ -561,44 +565,44 @@ export default defineComponent({
           const form = unref(dataForm)
           form.validate(async (valid: any) => {
             if (valid) {
-              
               const HourseModel = dataMap.tempHourseModel
               // @ts-ignore
-              HourseModel.preview_image = HourseModel.filelist
-              HourseModel.pic_desc = HourseModel.tagFormData
-              console.log({HourseModel});
-              
+              HourseModel.preview_image = HourseModel.filelist[0]
+              HourseModel.pic_desc = HourseModel.picDescFormData
+              // @ts-ignores
+              if (HourseModel.tag.length > 0) HourseModel.tag = HourseModel?.tag?.split(',')
+              console.log({ HourseModel });
               // HourseModel.id = Math.round(Math.random() * 100) + 1024 // mock a id
-              const addData = await createArticle(HourseModel)
-
-              // if (addData?.data.id) {
-              //   alert(addData.data.id)
-              //   console.log(addData)
-              //   dataMap.list.unshift(addData.data)
-              // }
-
-              dataMap.dialogFormVisible = false
-              ElMessage.success({
-                message: '创建成功',
-                type: 'success',
-                duration: 2000
-              })
+              try {
+                const addData = await createArticle(HourseModel)
+                if (addData) {
+                  dataMap.dialogFormVisible = false
+                  ElMessage.success({
+                    message: t('system.success'),
+                    type: 'success',
+                    duration: 2000
+                  })
+                }
+              } catch (error: any) {
+                throw new Error(error);
+              }
             }
           })
         },
 
         handleUpdate(row: any) {
-          const excludesArr = ['id','filelist','preview_image','label','indoor_map_desc','swiper_number','pic_desc','tag_str','tag','','','','','','',]
-          dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
-
-          const _obj = cloneDeep({...row,filelist:[row.preview_image],tagFormData:dataMap.tagFormData(row.indoor_map_desc)})
-          console.log({_obj,fff:dataMap.tagFormData(row.indoor_map_desc)});
-          
-          // dataMap.tempHourseModel = Object.assign({}, row)
-          dataMap.tempHourseModel = cloneDeep(_obj,)
-
           dataMap.dialogStatus = 'update'
           dataMap.dialogFormVisible = true
+          const excludesArr = ['id', 'filelist', 'preview_image', 'label', 'indoor_map_desc', 'swiper_number', 'pic_desc', 'tag_str', 'tag', '', '', '', '', '', '',]
+          dataMap.EleItemArr = cloneDeep(objectToArray(defaultHourseModel)).filter(i => !excludesArr.includes(i.key))
+          const _obj = cloneDeep({
+            ...row,
+            filelist: row.preview_image ? [row.preview_image] : [],
+            picDescFormData: dataMap.picDescFormData(row.indoor_map_desc)
+          })
+          console.log({ _obj });
+
+          dataMap.tempHourseModel = _obj
           nextTick(() => {
             (dataForm.value as typeof ElForm).clearValidate()
           })
@@ -610,25 +614,25 @@ export default defineComponent({
             if (valid) {
               const tempData = cloneDeep(dataMap.tempHourseModel)
               // @ts-ignore
-              tempData.preview_image = tempData.filelist
-              // const tempData = Object.assign({}, dataMap.tempHourseModel)
+              tempData.preview_image = tempData.filelist[0]
+              tempData.pic_desc = tempData.picDescFormData
               console.log(tempData)
-              const data = await updateArticle(tempData)
-
-              console.log(data, '-----------------')
-              // if (data) {
-              //   const index = dataMap.list.findIndex(
-              //     (v: { id: any }) => v.id === data.data.id
-              //   )
-              //   dataMap.list.splice(index, 1, data.data)
-              // }
-
-              dataMap.dialogFormVisible = false
-              ElMessage.success({
-                message: '更新成功',
-                type: 'success',
-                duration: 2000
-              })
+              // @ts-ignore
+              if (!(tempData.tag instanceof Array) && tempData.tag.length > 0) tempData.tag = tempData.tag.split(',')
+              tempData.tag = tempData.tag.filter((item: string) => item !== "")
+              try {
+                const data = await updateArticle(tempData)
+                if (data) {
+                  dataMap.dialogFormVisible = false
+                  ElMessage.success({
+                    message: t('system.success'),
+                    type: 'success',
+                    duration: 2000
+                  })
+                }
+              } catch (error: any) {
+                throw new Error(error);
+              }
             }
           })
         },
@@ -667,14 +671,14 @@ export default defineComponent({
           return calendarTypeKeyValue[type]
         },
 
-        tagFormData(originalArray: [{url: string, desc: string, filename?:string}]): string {
+        picDescFormData(originalArray: [{ url: string, desc: string, filename?: string }]): string {
           // 创建一个新数组来存储提取的值
           const newArray = [];
           // 使用循环或数组方法提取特定值
           for (var i = 0; i < originalArray.length; i++) {
             newArray.push(originalArray[i].desc);
           }
-          return newArray.join(',')
+          return newArray.join('&')
         }
       });
 
@@ -712,14 +716,17 @@ export default defineComponent({
   /* width: 100px; */
   margin-right: 15px;
 }
+
 .form-pic-desc-container {
   padding: 10px;
   border: 1px solid skyblue;
   margin-bottom: 20px;
 }
+
 .form-pic-desc-container h3 {
   text-align: center;
 }
+
 .table-tag {
   margin: 3px;
 }

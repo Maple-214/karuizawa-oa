@@ -57,7 +57,7 @@ export default {
         handleRemove(file, filelists = []) {
             console.log(888888888);
             console.log({ file,filelists});
-            const index = this.filelists?.findIndex((item) => item === file.url);
+            // const index = this.filelists?.findIndex((item) => item === file.url);
             this.handlerUploadRemoveOne(file.name || file.filename)
             this.handlerUploadRemoveMany(file.name)
         },
@@ -92,7 +92,7 @@ export default {
                 const params = new FormData();
                 console.log(params);
                 params.append("file", file);
-                fetch('http://192.168.1.48:3300/upload', {
+                fetch('http://localhost:3300/upload', {
                     method: 'POST',
                     body: params,
                     headers: {
