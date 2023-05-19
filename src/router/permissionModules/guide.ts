@@ -12,6 +12,9 @@ const GuideRouter: Array<RouteRecordRaw> = [
   {
     path: '/guide',
     component: Layout,
+    meta: {
+      hidden: true
+    },
     children: [
       {
         path: 'index',

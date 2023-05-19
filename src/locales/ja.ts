@@ -4,7 +4,7 @@
 
 export default {
     route: {
-      dashboard: '首页',
+      dashboard: '表紙',
       documentation: '文档',
       guide: '引导页',
       permission: '权限测试页',
@@ -41,7 +41,7 @@ export default {
       'menu1-3': '菜单 1-3',
       menu2: '菜单 2',
       table: '表格',
-      dynamicTable: '动态表格',
+      dynamicTable: '住宅管理',
       draggableTable: '可拖拽表格',
       inlineEditTable: '表格内编辑',
       complexTable: '综合表格',
@@ -66,15 +66,15 @@ export default {
       clipboard: '粘贴板',
       i18n: '国际化',
       externalLink: '外链',
-      profile: '个人中心'
+      profile: 'パーソナルセンター'
     },
     navbar: {
       logOut: '退出登录',
-      dashboard: '首页',
+      dashboard: '表紙',
       github: '项目地址',
-      theme: '换肤',
-      size: '布局大小',
-      profile: '个人中心'
+      theme: '皮を張り直す',
+      size: 'レイアウトサイズ',
+      profile: 'パーソナルセンター'
     },
     login: {
       title: '系统登录',
@@ -101,7 +101,7 @@ export default {
     },
     guide: {
       description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
-      button: '打开引导'
+      button: 'オープンガイド'
     },
     components: {
       documentation: '文档',
@@ -121,9 +121,9 @@ export default {
       importance: '重要性',
       type: '类型',
       remark: '点评',
-      search: '搜索',
-      add: '添加',
-      export: '导出',
+      search: '検索',
+      add: '追加',
+      export: '輸出',
       reviewer: '审核人',
       id: 'ID',
       date: '时间',
@@ -183,7 +183,10 @@ export default {
       pic_desc: '画像の説明',
       pic_desc_tips: `各画像の説明が完了したら & で区切ります。`,
       tag_tips: '各タグは,で区切ります',
-      new_hourse: '新着'
+      new_hourse: '新着',
+      required: '必要',
+      is:'は',
+      placeholder: '選んでください'
     },
     example: {
       warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

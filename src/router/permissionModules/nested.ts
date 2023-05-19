@@ -15,7 +15,8 @@ const nestedRouter: Array<RouteRecordRaw> = [{
   name: 'Nested',
   meta: {
     title: 'nested',
-    icon: '#iconnested'
+    icon: '#iconnested',
+    hidden: true
   },
   children: [
     {

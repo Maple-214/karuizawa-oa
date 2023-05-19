@@ -1,9 +1,5 @@
 /*
- * @Description: excel相关
- * @Author: scy
- * @Date: 2021-01-21 20:13:03
- * @LastEditors: scy
- * @LastEditTime: 2021-01-21 21:24:27
+ * @Description: excel
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -16,7 +12,8 @@ const ExcelRouter: Array<RouteRecordRaw> = [
     redirect: '/excel/export-excel',
     meta: {
       title: 'excel',
-      icon: '#iconexcel'
+      icon: '#iconexcel',
+      hidden: true
     },
     children: [
       {

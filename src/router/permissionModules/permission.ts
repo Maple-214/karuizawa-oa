@@ -1,9 +1,5 @@
 /*
- * @Description:
- * @Author: ZY
- * @Date: 2021-01-08 19:32:52
- * @LastEditors: scy😊
- * @LastEditTime: 2021-01-23 15:55:22
+ * @Description: permission
  */
 
 import { RouteRecordRaw } from 'vue-router'
@@ -18,7 +14,8 @@ const permissionRouter: Array<RouteRecordRaw> = [
       title: 'permission',
       icon: '#iconquanxian',
       roles: ['admin', 'editor'], // you can set roles in root nav
-      alwaysShow: true // will always show the root menu
+      alwaysShow: true, // will always show the root menu,
+      hidden: true
     },
     children: [
       {

@@ -19,29 +19,29 @@ const tableRouter: Array<RouteRecordRaw> = [
       icon: '#icontable'
     },
     children: [
-      {
-        path: 'dynamic-table',
-        component: () => import(/* webpackChunkName: "dynamic-table" */ '@/views/table/dynamic-table/Index.vue'),
-        name: 'ComplexTable',
-        meta: { title: 'complexTable' }
-      },
-      {
-        path: 'Draggable_table',
-        component: () => import(/* webpackChunkName: "draggable-table" */ '@/views/table/DraggableTable.vue'),
-        name: 'DraggableTable',
-        meta: { title: 'draggableTable' }
-      },
-      {
-        path: 'Inline_edit_table',
-        component: () => import(/* webpackChunkName: "inline-edit-table" */ '@/views/table/InlineEditTable.vue'),
-        name: 'InlineEditTable',
-        meta: { title: 'inlineEditTable' }
-      },
+      // {
+      //   path: 'dynamic-table',
+      //   component: () => import(/* webpackChunkName: "dynamic-table" */ '@/views/table/dynamic-table/Index.vue'),
+      //   name: 'ComplexTable',
+      //   meta: { title: 'complexTable' }
+      // },
+      // {
+      //   path: 'Draggable_table',
+      //   component: () => import(/* webpackChunkName: "draggable-table" */ '@/views/table/DraggableTable.vue'),
+      //   name: 'DraggableTable',
+      //   meta: { title: 'draggableTable' }
+      // },
+      // {
+      //   path: 'Inline_edit_table',
+      //   component: () => import(/* webpackChunkName: "inline-edit-table" */ '@/views/table/InlineEditTable.vue'),
+      //   name: 'InlineEditTable',
+      //   meta: { title: 'inlineEditTable' }
+      // },
       {
         path: 'Complex_table',
         component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/ComplexTable.vue'),
         name: 'DynamicTable',
-        meta: { title: 'dynamicTable' }
+        meta: { title: 'dynamicTable', icon: '#icontable' }
       }
     ]
   }

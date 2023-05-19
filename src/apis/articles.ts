@@ -69,8 +69,8 @@ export const updateArticle = (params: any) => {
   return https().request<RootObject<HourseModel>>('hourse/updateArticle', Method.POST, params, ContentType.json)
 }
 
-export const deleteArticle = (id: number) => {
-  return https().request<RootObject<HourseModel>>(`articles/${id}`, Method.POST, undefined, ContentType.json)
+export const deleteArticle = (params: any) => {
+  return https().request<RootObject<HourseModel>>(`hourse/delete`, Method.POST, params, ContentType.json)
 }
 
 export interface Pageviews {

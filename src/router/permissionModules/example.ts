@@ -16,7 +16,8 @@ const ExampleRouter: Array<RouteRecordRaw> = [
     redirect: '/example/list',
     meta: {
       title: 'example',
-      icon: '#iconexample'
+      icon: '#iconexample',
+      hidden: true
     },
     children: [
       {

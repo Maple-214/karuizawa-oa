@@ -4,15 +4,15 @@
       <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item"
         @keyup.enter="handleFilter" />
 
-      <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
+      <!-- <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
         style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'"
           :value="item.key" />
-      </el-select>
+      </el-select> -->
 
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
+      <!-- <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
+      </el-select> -->
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ t("table.search") }}
@@ -27,12 +27,12 @@
         {{ t("table.export") }}
       </el-button>
 
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left: 15px" @change="tableKey = tableKey + 1">
+      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left: 15px" @change="tableKey = tableKey + 1">
         {{ t("table.reviewer") }}
-      </el-checkbox>
+      </el-checkbox> -->
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
+    <el-table :key="tableKey" v-loading="listLoading" :data="currentList" border fit highlight-current-row style="width: 100%"
       @sort-change="sortChange">
       <el-table-column :label="t('table.id')" prop="id" sortable="custom" align="center" width="220"
         :class-name="getSortClass('id')">
@@ -262,26 +262,26 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="t('table.status')" class-name="status-col" width="100">
+      <!-- <el-table-column :label="t('table.status')" class-name="status-col" width="100">
         <template #default="{ row }">
           <el-tag :type="row.status">
             {{ row.status }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column :label="t('table.actions')" align="center" width="320" class-name="fixed-width">
+      <el-table-column :label="t('table.actions')" align="center" width="220" class-name="fixed-width">
         <template #default="{ row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             {{ t("table.edit") }}
           </el-button>
-          <el-button v-if="row.status !== 'published'" size="mini" type="success"
+          <!-- <el-button v-if="row.status !== 'published'" size="mini" type="success"
             @click="handleModifyStatus(row, 'published')">
             {{ t("table.publish") }}
-          </el-button>
-          <el-button v-if="row.status !== 'draft'" size="mini" @click="handleModifyStatus(row, 'draft')">
+          </el-button> -->
+          <!-- <el-button v-if="row.status !== 'draft'" size="mini" @click="handleModifyStatus(row, 'draft')">
             {{ t("table.draft") }}
-          </el-button>
+          </el-button> -->
           <el-button v-if="row.status !== 'deleted'" size="mini" type="danger" @click="handleDelete(row, $index)">
             {{ t("table.delete") }}
           </el-button>
@@ -302,7 +302,7 @@
         status-icon="true">
 
         <el-form-item :label="t('table.swiper_number') + '：'" prop="swiper_number">
-          <el-select v-model="tempHourseModel.swiper_number" class="filter-item" placeholder="Please select">
+          <el-select v-model="tempHourseModel.swiper_number" class="filter-item" :placeholder="t('table.placeholder')">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName" :value="item.key" />
           </el-select>
         </el-form-item>
@@ -378,7 +378,8 @@ import {
   getPageviews,
   createArticle,
   updateArticle,
-  defaultHourseModel
+  defaultHourseModel,
+  deleteArticle
 } from '@/apis/articles'
 import { HourseModel } from '@/model/hourseModel'
 
@@ -414,14 +415,13 @@ export default defineComponent({
       {
         tableKey: 0,
         list: Array<HourseModel>(),
+        currentList:Array<HourseModel>(),
         total: 0,
         listLoading: true,
         listQuery: {
           page: 1,
           limit: 10,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
+          title: '',
           sort: '+id'
         },
         EleItemArr: objectToArray(defaultHourseModel),
@@ -439,17 +439,19 @@ export default defineComponent({
           update: t('table.edit'),
           create: t('table.create')
         },
-
         dialogPageviewsVisible: false,
         pageviewsData: [],
         rules: {
-          swiper_number: [{ required: true, message: 'swiper_number is required', trigger: 'change' }],
-          filelist: [{ required: true, message: 'preview_image is required', trigger: 'change' }],
-          indoor_map_desc: [{ required: true, message: 'indoor_map_desc is required', trigger: 'change' }],
-          name: [{ required: true, message: 'title is required', trigger: 'blur' }],
-          pic_desc: [{ required: true, message: 'pic_desc is required', trigger: 'blur' }],
-
-
+          swiper_number: [{ required: true, message: t('table.swiper_number') + t('table.is') + t('table.required'), trigger: 'change' }],
+          filelist: [{ required: true, message: t('table.filelist') + t('table.is') + t('table.required'), trigger: 'change' }],
+          indoor_map_desc: [{ required: true, message: t('table.indoor_map_desc') + t('table.is') + t('table.required'), trigger: 'change' }],
+          desc: [{ required: true, message: t('table.desc') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          name: [{ required: true, message: t('table.name') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          picDescFormData: [{ required: true, message: t('table.pic_desc') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          station: [{ required: true, message: t('table.station') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          price: [{ required: true, message: t('table.price') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          construction_area: [{ required: true, message: t('table.construction_area') + t('table.is') + t('table.required'), trigger: 'blur' }],
+          location: [{ required: true, message: t('table.location') + t('table.is') + t('table.required'), trigger: 'blur' }],
         },
         downloadLoading: false,
         tempHourseModel: { ...defaultHourseModel, picDescFormData: '' },
@@ -500,6 +502,7 @@ export default defineComponent({
           const data = await getArticles(dataMap.listQuery)
           // @ts-ignore
           dataMap.list = data?.data ?? []
+          dataMap.currentList = dataMap.list
           dataMap.total = (data?.data as any).length
 
           setTimeout(() => {
@@ -508,8 +511,9 @@ export default defineComponent({
         },
 
         handleFilter() {
-          dataMap.listQuery.page = 1
-          dataMap.getList()
+          dataMap.currentList = cloneDeep(dataMap.currentList.filter(i => i.name.includes(dataMap.listQuery.title)))
+          // dataMap.listQuery.page = 1
+          // dataMap.getList()
         },
 
         handleModifyStatus(row: any, status: string) {
@@ -582,6 +586,7 @@ export default defineComponent({
                     type: 'success',
                     duration: 2000
                   })
+                  dataMap.getList(null, null, null)
                 }
               } catch (error: any) {
                 throw new Error(error);
@@ -629,6 +634,7 @@ export default defineComponent({
                     type: 'success',
                     duration: 2000
                   })
+                  dataMap.getList(null, null, null)
                 }
               } catch (error: any) {
                 throw new Error(error);
@@ -637,13 +643,22 @@ export default defineComponent({
           })
         },
 
-        handleDelete(row: any, index: number) {
-          ElMessage.success({
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          dataMap.list.splice(index, 1)
+        async handleDelete(row: any, index: number) {
+          console.log({ row });
+          try {
+            const data = await deleteArticle({ _id: row._id })
+            if (data?.msg === 'success') {
+              ElMessage.success({
+                message: 'Delete Successfully',
+                type: 'success',
+                duration: 2000
+              })
+            }
+            dataMap.getList(null, null, null)
+          } catch (error: any) {
+            throw new Error(error);
+          }
+          // dataMap.list.splice(index, 1)
         },
 
         async handleGetPageviews(pageviews: string) {

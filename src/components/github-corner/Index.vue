@@ -1,12 +1,8 @@
 <!--
- * @Description:  github 图标
- * @Author: ZY
- * @Date: 2021-01-18 11:43:14
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-18 11:51:11
+ * @Description:  github icon
 -->
 <template>
-  <a
+  <!-- <a
     href="https://github.com/rcyj-FED/vue3-composition-admin"
     target="_blank"
     class="github-corner"
@@ -32,7 +28,7 @@
         class="octo-body"
       />
     </svg>
-  </a>
+  </a> -->
 </template>
 
 <script lang="ts">
