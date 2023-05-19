@@ -484,8 +484,6 @@ export default defineComponent({
           if (limit) {
             dataMap.listQuery.limit = limit
           }
-          console.log({ 999: dataMap.listQuery });
-
           dataMap.listLoading = true
           const data = await getArticles(dataMap.listQuery)
           dataMap.list = data?.data.data ?? []
@@ -494,8 +492,6 @@ export default defineComponent({
             dataMap.listLoading = false
           }, 0.5 * 1000)
         },
-        handleFilterChange: debounce(() => dataMap.getList(), 500),
-
         handleFilter() {
           dataMap.getList()
         },
@@ -530,7 +526,6 @@ export default defineComponent({
         },
 
         resetTempHourseModel() {
-          // @ts-ignore
           dataMap.tempHourseModel = { ...cloneDeep(defaultHourseModel), filelist: [], indoor_map_desc: [] }
         },
 
@@ -665,10 +660,6 @@ export default defineComponent({
           dataMap.downloadLoading = false
         },
 
-        typeFilter: (type: string) => {
-          return calendarTypeKeyValue[type]
-        },
-
         picDescFormData(originalArray: [{ url: string, desc: string, filename?: string }]): string {
           // 创建一个新数组来存储提取的值
           const newArray = [];
@@ -679,13 +670,14 @@ export default defineComponent({
           return newArray.join('&')
         }
       });
+    const handleFilterChange = debounce(() => dataMap.getList(), 400)
 
     onMounted(() => {
       console.log(typeof ElForm)
       dataMap.getList(null, null, 5)
     })
 
-    return { t, ...toRefs(dataMap), dataForm }
+    return { t, ...toRefs(dataMap), handleFilterChange, dataForm }
   }
 })
 </script>
