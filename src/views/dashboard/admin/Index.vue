@@ -1,9 +1,5 @@
 <!--
  * @Description: admin 权限主页
- * @Author: ZY
- * @Date: 2021-01-15 18:44:25
- * @LastEditors: SCY
- * @LastEditTime: 2021-04-02 09:40:07
 -->
 <template>
   <div class="dashboard-editor-container">
@@ -43,7 +39,7 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="8">
+    <!-- <el-row :gutter="8">
       <el-col
         :xs="{span: 24}"
         :sm="{span: 24}"
@@ -64,9 +60,9 @@
       >
         <TodoList style="border-radius: 8px;" />
       </el-col>
-    </el-row>
+    </el-row> -->
 
-    <el-row>
+    <!-- <el-row>
       <el-col
         :xs="{span: 24}"
         :sm="{span: 24}"
@@ -87,12 +83,12 @@
       >
         <BoxCard style="border-radius: 8px;" />
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import GithubCorner from '@/components/github-corner/Index.vue'
 import PanelGroup from './components/PanelGroup.vue'
 import LineChart from './components/LineChart.vue'
@@ -103,6 +99,7 @@ import DependsTable from './components/DependsTable.vue'
 import TodoList from './components/todo-list/Index.vue'
 import BoxCard from './components/BoxCard.vue'
 import UpdateTimeline from './components/UpdateTimeline.vue'
+
 export default {
   components: {
     GithubCorner,
@@ -135,11 +132,12 @@ export default {
         actualData: [120, 82, 91, 154, 162, 140, 130]
       }
     }
-
+    
     const lineChartData = ref(data.newVisitis)
     const handleSetLineChartData = (type) => {
       lineChartData.value = data[type]
     }
+
 
     return {
       lineChartData,

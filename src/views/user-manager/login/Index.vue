@@ -94,26 +94,26 @@
       </el-button>
 
       <div style="position:relative">
-        <div class="tips">
+        <!-- <div class="tips">
           <span>{{ t("login.username") }} : admin </span>
-          <span>{{ t("login.password") }} : {{ t("login.any") }} </span>
-        </div>
-        <div class="tips">
+          <span>{{ t("login.password") }} : </span>
+        </div> -->
+        <!-- <div class="tips">
           <span>{{ t("login.username") }} : editor </span>
           <span>{{ t("login.password") }} : {{ t("login.any") }} </span>
-        </div>
+        </div> -->
 
-        <el-button
+        <!-- <el-button
           class="thirdparty-button"
           type="primary"
           @click="showDialog = true"
         >
           {{ t("login.thirdparty") }}
-        </el-button>
+        </el-button> -->
       </div>
     </el-form>
 
-    <el-dialog
+    <!-- <el-dialog
       :title="t('login.thirdparty')"
       v-model="showDialog"
     >
@@ -122,7 +122,7 @@
       <br>
       <br>
       <SocialSign />
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

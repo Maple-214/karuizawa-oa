@@ -11,7 +11,7 @@
             </div>
           </template>
           <div style="margin-bottom:50px;">
-            <el-row :span="24">
+            <!-- <el-row :span="24">
               <el-col
                 :span="4"
                 class="text-center"
@@ -78,7 +78,7 @@
                   Theme
                 </router-link>
               </el-col>
-            </el-row>
+            </el-row> -->
           </div>
         </el-card>
       </el-col>

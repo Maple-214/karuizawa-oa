@@ -1,9 +1,5 @@
 /*
  * @Description: 设置属性类
- * @Author: ZY
- * @Date: 2020-12-08 09?:45?:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-25 19:58:42
  */
 
 import { Language, Environment, RouterSource, RouterMode, TokenStorageName } from '@/constant/settings'
@@ -60,7 +56,7 @@ export interface Settings{
 
 const settings: Settings = {
   //项目中页面显示的名称
-  title:'Vue3管理后台',
+  title:'Vue軽井沢',
   //基础url
   baseURL: process.env.VUE_APP_BASE_API,
   // pro版本copyright可随意修改

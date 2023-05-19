@@ -1,9 +1,5 @@
 <!--
  * @Description: 侧边栏logo(需要跟随侧边栏折叠)
- * @Author: ZY
- * @Date: 2020-12-25 11:34:37
- * @LastEditors: ZY
- * @LastEditTime: 2021-04-09 15:43:28
 -->
 
 <template>
@@ -34,7 +30,7 @@
           :src="Logo"
         >
         <h1 class="sidebar-title">
-          Vue<span style="color:#57CAEB">3</span>管理后台
+          Vue<span style="color:#57CAEB">軽井沢</span>
         </h1>
       </router-link>
     </transition>

@@ -1,75 +1,54 @@
 <!--
  * @Description: 导航栏
- * @Author: ZY
- * @Date: 2020-12-17 15:52:19
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 19:16:50
 -->
 <template>
   <div class="navbar">
-    <Hamburger
-      id="hamburger-container"
-      :is-active="sidebar.opened"
-      class="hamburger-container"
-      @toggle-click="toggleSideBar"
-    />
-    <BreadCrumb
-      id="breadcrumb-container"
-      class="breadcrumb-container"
-    />
+    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+      @toggle-click="toggleSideBar" />
+    <BreadCrumb id="breadcrumb-container" class="breadcrumb-container" />
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <!-- <error-log class="errLog-container right-menu-item hover-effect" /> -->
         <Screenfull class="right-menu-item hover-effect" />
-        <el-tooltip
-          :content="t('navbar.size')"
-          effect="dark"
-          placement="bottom"
-        >
+        <el-tooltip :content="t('navbar.size')" effect="dark" placement="bottom">
           <SizeSelect class="right-menu-item hover-effect" />
         </el-tooltip>
         <LangSelect class="right-menu-item hover-effect" />
       </template>
-      <el-dropdown
-        class="avatar-container right-menu-item hover-effect"
-        trigger="click"
-      >
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img
-            :src="avatar + '?imageView2/1/w/80/h/80'"
-            class="user-avatar"
-          >
+          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <router-link to="/profile/">
+            <!-- <router-link to="/profile/">
               <el-dropdown-item>
                 {{ t("navbar.profile") }}
               </el-dropdown-item>
-            </router-link>
+            </router-link> -->
             <router-link to="/">
               <el-dropdown-item>
                 {{ t("navbar.dashboard") }}
               </el-dropdown-item>
             </router-link>
-            <a
+            <li @click="openGuide">
+            <el-dropdown-item>{{ t('guide.button') }}</el-dropdown-item>
+          </li>
+          <!-- <a
               target="_blank"
               href="https://github.com/rcyj-FED/vue3-composition-admin"
             >
               <el-dropdown-item>
-                {{ t("navbar.github") }}
+                    {{ t("navbar.github") }}
               </el-dropdown-item>
-            </a>
-            <a
+            </a> -->
+          <!-- <a
               target="_blank"
               href="https://armour.github.io/vue-typescript-admin-docs/"
-            >
-              <el-dropdown-item>Docs</el-dropdown-item>
-            </a>
-            <el-dropdown-item
-              divided
-              @click="logout"
-            >
+                >
+                  <el-dropdown-item>Docs</el-dropdown-item>
+                </a> -->
+            <el-dropdown-item divided @click="logout">
               <span style="display:block;">
                 {{ t("navbar.logOut") }}
               </span>
@@ -81,19 +60,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BreadCrumb from '@/components/bread-crumb/Index.vue'
 import Hamburger from '@/components/hamburger/Index.vue'
 import Screenfull from '@/components/screenfull/Index.vue'
 import LangSelect from '@/components/lang_select/Index.vue'
 import SizeSelect from '@/components/size_select/Index.vue'
 
-import { computed, reactive, toRefs } from 'vue'
+import { computed, reactive, toRefs, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { AppActionTypes } from '@/store/modules/app/action-types'
 import { useI18n } from 'vue-i18n'
 import { UserActionTypes } from '@/store/modules/user/action-types'
 import { useRoute, useRouter } from 'vue-router'
+import Driver from 'driver.js'
+import 'driver.js/dist/driver.min.css'
+import steps from '@/views/guide/steps'
 export default {
   components: {
     BreadCrumb,
@@ -127,10 +109,21 @@ export default {
         })
       }
     })
+    let driver: Driver | null = null
+    onMounted(() => {
+      driver = new Driver()
+    })
+    const openGuide = () => {
+      if (driver) {
+        driver.defineSteps(steps)
+        driver.start()
+      }
+    }
     return {
       sidebar,
       device,
       avatar,
+      openGuide,
       ...toRefs(state),
       t
     }

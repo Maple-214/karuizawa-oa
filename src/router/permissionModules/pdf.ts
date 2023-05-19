@@ -1,9 +1,5 @@
 /*
- * @Description: pdf打印
- * @Author: scy
- * @Date: 2021-01-21 20:13:03
- * @LastEditors: scy😊
- * @LastEditTime: 2021-01-25 11:36:25
+ * @Description: pdf
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -13,6 +9,9 @@ const PdfRouter: Array<RouteRecordRaw> = [
     path: '/pdf',
     component: Layout,
     redirect: '/pdf/index',
+    meta:{
+      hidden: true
+    },
     children: [
       {
         path: 'index',
@@ -20,7 +19,8 @@ const PdfRouter: Array<RouteRecordRaw> = [
         name: 'PDF',
         meta: {
           title: 'pdf',
-          icon: '#iconpdf'
+          icon: '#iconpdf',
+          
         }
       }
     ]

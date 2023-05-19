@@ -57,9 +57,11 @@ export default {
         handleRemove(file, filelists = []) {
             console.log(888888888);
             console.log({ file,filelists});
-            const index = this.filelists?.findIndex((item) => item === file.url);
-            this.handlerUploadRemoveOne(file.name || file.filename)
-            this.handlerUploadRemoveMany(file.name)
+            // const index = this.filelists?.findIndex((item) => item === file.url);
+            // this.handlerUploadRemoveOne(file.name || file.filename)
+            // this.handlerUploadRemoveMany(file.name || file.filename)
+            this.handlerUploadRemoveOne(filelists)
+            this.handlerUploadRemoveMany(filelists)
         },
         //文件状态改变时的函数(主要逻辑函数)
         uploadFile(e, fileList) {
@@ -92,7 +94,7 @@ export default {
                 const params = new FormData();
                 console.log(params);
                 params.append("file", file);
-                fetch('http://192.168.1.48:3300/upload', {
+                fetch('http://localhost:3300/upload', {
                     method: 'POST',
                     body: params,
                     headers: {

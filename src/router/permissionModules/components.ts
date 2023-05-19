@@ -16,7 +16,8 @@ const componentsRouter: Array<RouteRecordRaw> = [
     name: 'Components',
     meta: {
       title: 'components',
-      icon: '#iconcomponent'
+      icon: '#iconcomponent',
+      hidden: true
     },
     children: [
       {
