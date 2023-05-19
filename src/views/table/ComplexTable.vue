@@ -2,17 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.title" :placeholder="t('table.title')" style="width: 200px" class="filter-item"
-        @keyup.enter="handleFilter" />
-
-      <!-- <el-select v-model="listQuery.type" :placeholder="t('table.type')" clearable class="filter-item"
-        style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.displayName + '(' + item.key + ')'"
-          :value="item.key" />
-      </el-select> -->
-
-      <!-- <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select> -->
+        @keyup.enter="handleFilter" @input="handleFilterChange" />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         {{ t("table.search") }}
@@ -26,13 +16,9 @@
         @click="handleDownload">
         {{ t("table.export") }}
       </el-button>
-
-      <!-- <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left: 15px" @change="tableKey = tableKey + 1">
-        {{ t("table.reviewer") }}
-      </el-checkbox> -->
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="currentList" border fit highlight-current-row style="width: 100%"
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%"
       @sort-change="sortChange">
       <el-table-column :label="t('table.id')" prop="id" sortable="custom" align="center" width="220"
         :class-name="getSortClass('id')">
@@ -291,10 +277,8 @@
     </el-table>
 
     <el-pagination :total="total" v-show="total > 0" v-model:page="listQuery.page" v-model:limit="listQuery.limit"
-      @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
-      :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" />
-
-
+      @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+      :page-sizes="[5, 10, 15, 20]" page-size="5" layout="total, sizes, prev, pager, next, jumper" />
     <!-- 弹窗 -->
 
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
@@ -347,7 +331,7 @@
       </div>
     </el-dialog>
 
-
+    <!-- 
     <el-dialog v-model:visible="dialogPageviewsVisible" title="Reading statistics">
       <el-table :data="pageviewsData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="Channel" />
@@ -357,7 +341,7 @@
         <el-button type="primary" @click="dialogPageviewsVisible = false">
           {{ t("table.confirm") }}</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -372,7 +356,7 @@ import {
   unref
 } from 'vue'
 import { ElForm, ElMessage } from 'element-plus'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import {
   getArticles,
   getPageviews,
@@ -415,15 +399,15 @@ export default defineComponent({
       {
         tableKey: 0,
         list: Array<HourseModel>(),
-        currentList:Array<HourseModel>(),
         total: 0,
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 5,
           title: '',
           sort: '+id'
         },
+        currentPage: 1,
         EleItemArr: objectToArray(defaultHourseModel),
         calendarTypeOptions: calendarTypeOptions,
         sortOptions: [
@@ -487,33 +471,33 @@ export default defineComponent({
         },
 
         handleSizeChange(val: any) {
+          console.log({ val });
+
           dataMap.getList(null, null, val)
         },
 
         async getList(page?: any, total?: any, limit?: any) {
+
           if (page) {
             dataMap.listQuery.page = page
           }
           if (limit) {
             dataMap.listQuery.limit = limit
           }
-          console.log(total)
+          console.log({ 999: dataMap.listQuery });
+
           dataMap.listLoading = true
           const data = await getArticles(dataMap.listQuery)
-          // @ts-ignore
-          dataMap.list = data?.data ?? []
-          dataMap.currentList = dataMap.list
-          dataMap.total = (data?.data as any).length
-
+          dataMap.list = data?.data.data ?? []
+          dataMap.total = data?.data.total || 0
           setTimeout(() => {
             dataMap.listLoading = false
           }, 0.5 * 1000)
         },
+        handleFilterChange: debounce(() => dataMap.getList(), 500),
 
         handleFilter() {
-          dataMap.currentList = cloneDeep(dataMap.currentList.filter(i => i.name.includes(dataMap.listQuery.title)))
-          // dataMap.listQuery.page = 1
-          // dataMap.getList()
+          dataMap.getList()
         },
 
         handleModifyStatus(row: any, status: string) {
@@ -658,7 +642,6 @@ export default defineComponent({
           } catch (error: any) {
             throw new Error(error);
           }
-          // dataMap.list.splice(index, 1)
         },
 
         async handleGetPageviews(pageviews: string) {
@@ -699,7 +682,7 @@ export default defineComponent({
 
     onMounted(() => {
       console.log(typeof ElForm)
-      dataMap.getList(null, null, 20)
+      dataMap.getList(null, null, 5)
     })
 
     return { t, ...toRefs(dataMap), dataForm }

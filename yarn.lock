@@ -2628,10 +2628,10 @@ aws4@^1.8.0:
   resolved "https://registry.npmjs.org/aws4/-/aws4-1.11.0.tgz"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios-mapper@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.npm.taobao.org/axios-mapper/download/axios-mapper-0.5.4.tgz"
-  integrity sha1-f6eYpuqbrsJzXuBW+FuqMVUco6w=
+axios-mapper@^0.5.9:
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/axios-mapper/-/axios-mapper-0.5.9.tgz#af83183556a7747700fe6a4ba579406df35f9c7c"
+  integrity sha512-BtrCRk0mDCUf4Z+7JG46HSfOYJXYUBCxciGyFF7uJMMj9IaIpqufJafw4iVBPkFKgB9NCjpEu9Svryj7jiZghA==
   dependencies:
     "@types/qs" "^6.9.5"
     axios "^0.21.0"
