@@ -9,11 +9,11 @@
   <div class="components-container">
     <aside>
       {{ t('components.tinymceTips') }}
-      <a
+      <!-- <a
         target="_blank"
         class="link-type"
         href="https://armour.github.io/vue-typescript-admin-docs/features/components/rich-editor.html"
-      >{{ t('components.documentation') }}</a>
+      >{{ t('components.documentation') }}</a> -->
     </aside>
     <div>
       <Tinymce

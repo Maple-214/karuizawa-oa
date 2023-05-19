@@ -1,9 +1,5 @@
 /*
- * @Description:
- * @Author: ZY
- * @Date: 2020-12-07 10:30:20
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-27 20:10:59
+ * @Description: 路由管理
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
@@ -51,7 +47,21 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       }
     ]
   },
-  ...constantModules
+  {
+    path: '/table',
+    component: Layout,
+    redirect: '/table/Complex-table',
+    children: [
+      {
+        path: 'Complex_table',
+        component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/ComplexTable.vue'),
+        name: 'DynamicTable',
+        meta: { title: 'dynamicTable',icon: '#icontable' }
+      }
+    ]
+  },
+  // ...constantModules,
+  { path: '/:pathMatch(.*)*', name: '404', component: () => import(/* webpackChunkName: "error-page-404" */ '@/views/error-page/404.vue'), }
 ]
 
 export const asyncRoutes: Array<RouteRecordRaw> = [

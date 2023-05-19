@@ -9,7 +9,8 @@ const ExampleRouter: Array<RouteRecordRaw> = [
     redirect: 'noredirect',
     meta: {
       title: 'errorPages',
-      icon: '#icon404'
+      icon: '#icon404',
+      hidden: true
     },
     children: [
       {

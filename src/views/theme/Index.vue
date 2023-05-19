@@ -2,13 +2,13 @@
   <div class="app-container">
     <el-card class="box-card">
       <template #header>
-        <a
+        <!-- <a
           class="link-type link-title"
           target="_blank"
           href="https://armour.github.io/vue-typescript-admin-docs/guide/advanced/theme.html"
         >
           {{ t('theme.documentation') }}
-        </a>
+        </a> -->
       </template>
       <div class="box-item">
         <span class="field-label">{{ t('theme.change') }} : </span>

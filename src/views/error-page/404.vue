@@ -1,9 +1,5 @@
 <!--
  * @Description: 404 错误页面
- * @Author: ZY
- * @Date: 2021-01-11 19:20:47
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-11 19:25:29
 -->
 <template>
   <div class="wscn-http404-container">
@@ -32,26 +28,26 @@
       </div>
       <div class="text-404">
         <div class="text-404__oops">
-          OOPS!
+          {{t('route.oops')}}!
         </div>
-        <div class="text-404__info">
+        <!-- <div class="text-404__info">
           All rights reserved
           <a
             style="color:#20a0ff"
             href="https://wallstreetcn.com"
             target="_blank"
           >wallstreetcn</a>
-        </div>
+        </div> -->
         <div class="text-404__headline">
-          {{ message }}
+          {{t('route.error_page_tips2')}}
         </div>
         <div class="text-404__info">
-          Please check that the URL you entered is correct, or click the button below to return to the homepage.
+          {{t('route.error_page_tips1')}}!
         </div>
         <a
           href=""
           class="text-404__return-home"
-        >Back to home</a>
+        >{{t('route.back_home')}}</a>
       </div>
     </div>
   </div>
@@ -59,10 +55,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 export default defineComponent({
+  
   setup() {
+    const { t } = useI18n()
     return {
-      message: '404 Page Not Found'
+      t,
     }
   }
 })
