@@ -1,5 +1,5 @@
 <!--
- * @Description: 导航栏
+ * @Description: 导 航栏
 -->
 <template>
   <div class="navbar">

@@ -1,5 +1,5 @@
 <!--
- * @Description: 引导模式
+ * @Description: 引导 模式
 -->
 <template>
   <div class="app-container">

@@ -1,5 +1,5 @@
 <!--
- * @Description: 404 错误页面
+ * @Description: 404  错误页面
 -->
 <template>
   <div class="wscn-http404-container">

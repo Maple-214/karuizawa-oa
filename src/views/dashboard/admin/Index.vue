@@ -1,5 +1,5 @@
 <!--
- * @Description: admin 权限主页
+ * @Description: admin  权限主页
 -->
 <template>
   <div class="dashboard-editor-container">

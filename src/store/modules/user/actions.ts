@@ -1,5 +1,5 @@
 /*
- * @Description: app actions
+ * @Description: app  actions
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'

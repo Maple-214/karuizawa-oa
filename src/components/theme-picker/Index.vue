@@ -1,9 +1,5 @@
 <!--
- * @Description:  主题选择器
- * @Author: ZY
- * @Date: 2021-01-19 11:06:36
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-20 15:58:27
+ * @Description:  主题选 择器
 -->
 
 <template>

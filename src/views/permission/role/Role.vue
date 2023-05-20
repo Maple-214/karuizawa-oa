@@ -1,9 +1,5 @@
 <!--
- * @Description: 角色切换和菜单配置（后端控制权限使用）
- * @Author: ZY
- * @Date: 2021-01-08 19:32:16
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-13 16:49:21
+ * @Description: 角色切换和菜单配置 （后端控制权限使用）
 -->
 <template>
   <div class="app-container">

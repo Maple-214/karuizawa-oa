@@ -1,9 +1,5 @@
 /*
- * @Description: 引导页
- * @Author: ZY
- * @Date: 2021-01-21 20:13:03
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-21 21:24:27
+ * @Description: 引 导页
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'

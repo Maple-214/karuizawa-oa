@@ -1,9 +1,5 @@
 /*
- * @Description:文章综合实例
- * @Author: scy
- * @Date: 2021-01-21 20:32:56
- * @LastEditors: scy
- * @LastEditTime: 2021-01-21 21:21:28
+ * @Description:文章综合实 例
  */
 
 import { RouteRecordRaw } from 'vue-router'

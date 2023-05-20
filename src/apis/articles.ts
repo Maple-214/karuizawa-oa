@@ -1,5 +1,5 @@
 /*
- * @Description:表格数据接口
+ * @Description:表格数据 接口
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'

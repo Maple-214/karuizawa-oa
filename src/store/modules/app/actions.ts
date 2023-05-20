@@ -1,9 +1,5 @@
 /*
- * @Description: app actions
- * @Author: ZY
- * @Date: 2020-12-23 10:25:37
- * @LastEditors: ZY
- * @LastEditTime: 2020-12-23 14:29:18
+ * @Description: app  actions
  */
 import { ActionTree, ActionContext } from 'vuex'
 

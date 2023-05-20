@@ -1,9 +1,5 @@
 /*
- * @Description: st
- * @Author: ZY
- * @Date: 2020-12-07 10:30:20
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-08 20:46:07
+ * @Description: s t
  */
 import { createStore, createLogger } from 'vuex'
 // import createPersistedState from 'vuex-persistedstate'

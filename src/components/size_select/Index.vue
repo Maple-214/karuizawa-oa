@@ -1,9 +1,5 @@
 <!--
- * @Description: 大小选择
- * @Author: ZY
- * @Date: 2020-12-24 09:59:06
- * @LastEditors: SCY
- * @LastEditTime: 2021-04-02 14:32:50
+ * @Description: 大小选 择
 -->
 <template>
   <div>

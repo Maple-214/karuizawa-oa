@@ -1,9 +1,5 @@
 <!--
- * @Description: 折线图案例
- * @Author: ZY
- * @Date: 2021-01-08 19:27:22
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-15 13:45:03
+ * @Description: 折线图 案例
 -->
 <template>
   <div class="chart-container">

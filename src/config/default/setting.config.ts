@@ -1,5 +1,5 @@
 /*
- * @Description: 设置属性类
+ * @Description: 设置属 性类
  */
 
 import { Language, Environment, RouterSource, RouterMode, TokenStorageName } from '@/constant/settings'

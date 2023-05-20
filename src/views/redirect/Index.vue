@@ -1,9 +1,5 @@
 <!--
- * @Description: 重定向
- * @Author: ZY
- * @Date: 2021-01-05 18:01:18
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-05 18:07:04
+ * @Description: 重定 向
 -->
 
 <script lang="ts">

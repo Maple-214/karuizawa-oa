@@ -1,9 +1,5 @@
 /*
- * @Description:全局存储类封装（AES加解密）
- * @Autor: ZY
- * @Date: 2020-11-04 11:51:01
- * @LastEditors: ZY
- * @LastEditTime: 2020-12-28 16:57:57
+ * @Description:全局存储类封装（AES加解密 ）
  */
 
 import VAES from './ase'

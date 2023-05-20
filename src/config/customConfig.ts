@@ -1,5 +1,5 @@
 /*
- * @Description: 自定义配置
+ * @Description: 自定义配 置
  */
 
 import { NetworkConfig } from './default/net.config'

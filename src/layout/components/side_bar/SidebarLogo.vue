@@ -1,5 +1,5 @@
 <!--
- * @Description: 侧边栏logo(需要跟随侧边栏折叠)
+ * @Description: 侧边栏logo (需要跟随侧边栏折叠)
 -->
 
 <template>

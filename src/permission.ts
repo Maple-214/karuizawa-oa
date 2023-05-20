@@ -1,7 +1,3 @@
-/*
- * @Description: 权限
- */
-
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 // import { useI18n } from 'vue-i18n'

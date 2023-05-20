@@ -1,9 +1,5 @@
 <!--
- * @Description: app 布局入口
- * @Author: ZY
- * @Date: 2020-12-17 15:32:33
- * @LastEditors: SCY
- * @LastEditTime: 2021-04-06 14:47:00
+ * @Description: app 布局入 口
 -->
 <template>
   <div

@@ -1,9 +1,5 @@
 <!--
- * @Description: 首页饼图组件
- * @Author: ZY
- * @Date: 2021-01-18 11:08:53
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 10:19:45
+ * @Description: 首页 饼图组件
 -->
 <template>
   <div

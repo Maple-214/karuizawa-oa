@@ -1,9 +1,5 @@
 /*
- * @Description: 权限指令
- * @Author: ZY
- * @Date: 2020-12-28 10:39:21
- * @LastEditors: ZY
- * @LastEditTime: 2020-12-28 13:46:23
+ * @Description: 权限指 令
  */
 import { useStore } from '@/store'
 import { Directive } from 'vue'

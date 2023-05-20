@@ -1,5 +1,5 @@
 /*
- * @Description: 白名单
+ * @Description: 白名 单
  */
 
 const whiteList = ['/login', '/auth-redirect']
