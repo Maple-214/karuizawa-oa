@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            {{ t('dashboard.new_lisits') }}
           </div>
           <CountTo
             ref="myCount"
@@ -49,7 +49,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            {{ t('dashboard.messages') }}
           </div>
           <CountTo
             :start-val="0"
@@ -77,7 +77,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            {{ t('dashboard.purchases') }}
           </div>
           <CountTo
             :start-val="0"
@@ -105,7 +105,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            {{ t('dashboard.shoppings') }}
           </div>
           <CountTo
             :start-val="0"
@@ -126,12 +126,15 @@ import messages from '@/assets/images/home/messages.png'
 import purchases from '@/assets/images/home/purchases.png'
 import shoppings from '@/assets/images/home/shoppings.png'
 import visits from '@/assets/images/home/visits.png'
+import { useI18n } from 'vue-i18n'
+
 export default defineComponent({
   components: {
     CountTo
   },
   emits: ['handle-set-line-chart-data'],
   setup(_, { emit }) {
+    const { t } = useI18n()
     const handleSetLineChartData = (type: string) => {
       emit('handle-set-line-chart-data', type)
     }
@@ -142,6 +145,7 @@ export default defineComponent({
     })
 
     return {
+      t,
       handleSetLineChartData,
       myCount,
       messages,
