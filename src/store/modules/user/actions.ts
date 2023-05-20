@@ -1,9 +1,5 @@
 /*
  * @Description: app actions
- * @Author: ZY
- * @Date: 2020-12-23 10:25:37
- * @LastEditors: scy😊
- * @LastEditTime: 2021-01-29 08:46:37
  */
 import { ActionTree, ActionContext } from 'vuex'
 import { RootState, useStore } from '@/store'
@@ -16,6 +12,7 @@ import { removeToken, setToken } from '@/utils/cookies'
 import { PermissionActionType } from '../permission/action-types'
 import router, { resetRouter } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
+import {encrypt, decrypt } from '../../../utils/crypto'
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -48,8 +45,8 @@ export const actions: ActionTree<UserState, RootState> & Actions = {
     { commit }: AugmentedActionContext,
     userInfo: { username: string, password: string }
   ) {
-    let { username, password } = userInfo
-    username = username.trim()
+    const username = encrypt(userInfo.username.trim())
+    const password = encrypt(userInfo.password)
     await loginRequest({ username, password }).then(async(res) => {
       if (res?.code === 0 && res.data.accessToken) {
         setToken(res.data.accessToken)
