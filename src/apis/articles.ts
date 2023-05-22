@@ -8,6 +8,8 @@ import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
 export const defaultHourseModel = {
+  house_structure_picture:{url:'',filename:''},
+  house_structure_picture_filelist:[{filename:'',url:''}],
   filelist: [{filename:'',url:''}],
   preview_image: {url:'',filename:''},
   name: "",
@@ -50,7 +52,7 @@ export const defaultHourseModel = {
   regional_district_block: "",
   tag: [],
   pic_desc:'',
-  new_hourse: null
+  new_hourse: null,
 }
 
 export const getArticles = (params: any) => {

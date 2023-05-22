@@ -192,7 +192,8 @@ export default {
     new_hourse: '新着',
     required: '必要',
     is: 'は',
-    placeholder: '選んでください'
+    placeholder: '選んでください',
+    house_structure_picture:'住宅構造図'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
@@ -235,7 +236,8 @@ export default {
     sidebarTextTheme: '侧边栏文字主题色'
   },
   system: {
-    success: '成功'
+    success: '成功',
+    delete_successfully: '正常に削除されました'
   },
   dashboard: {
     new_lisits: '新規訪問',
