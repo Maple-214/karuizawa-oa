@@ -1,9 +1,5 @@
 <!--
- * @Description: 首页折现图组件
- * @Author: ZY
- * @Date: 2021-01-18 09:31:32
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 10:04:16
+ * @Description: 首页折现 图组件
 -->
 <template>
   <div

@@ -1,7 +1,3 @@
-/*
- * @Description:
- */
-
 import { ContentType, Device } from '@/constant/headers'
 import { InfoShowType } from '@/constant/network'
 import settings from "./setting.config";

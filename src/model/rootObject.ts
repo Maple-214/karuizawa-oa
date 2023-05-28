@@ -1,7 +1,3 @@
-/*
- * @Description:
- */
-
 export interface RootObject<T>{
   code: number
   msg: string

@@ -1,5 +1,5 @@
 /*
- * @Description: 粘贴板
+ * @Description: 粘 贴板
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'

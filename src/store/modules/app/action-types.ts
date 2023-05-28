@@ -1,9 +1,5 @@
 /*
- * @Description: app actions type
- * @Author: ZY
- * @Date: 2020-12-23 10:25:37
- * @LastEditors: ZY
- * @LastEditTime: 2020-12-23 14:02:25
+ * @Description: app actions  type
  */
 
 export enum AppActionTypes {

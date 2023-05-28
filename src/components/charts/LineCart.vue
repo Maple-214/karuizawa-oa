@@ -1,9 +1,5 @@
 <!--
- * @Description: 折线图
- * @Author: ZY
- * @Date: 2021-01-14 15:10:44
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-26 10:01:54
+ * @Description: 折线 图
 -->
 <template>
   <div

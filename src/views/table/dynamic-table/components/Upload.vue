@@ -14,6 +14,10 @@ import { useStore } from '@/store'
 export default {
     props: {
         limit: Number,
+        type: {
+            type: String,
+            default: ''
+        },
         filelist: {
             type: Array,
             default: []
@@ -50,17 +54,15 @@ export default {
         },
     }, 
     onMounted() {
-        console.log({ ttt: this.props });
     },
     methods: {
         //文件列表移除文件时的函数
         handleRemove(file, filelists = []) {
-            console.log(888888888);
             console.log({ file,filelists});
             // const index = this.filelists?.findIndex((item) => item === file.url);
             // this.handlerUploadRemoveOne(file.name || file.filename)
             // this.handlerUploadRemoveMany(file.name || file.filename)
-            this.handlerUploadRemoveOne(filelists)
+            this.handlerUploadRemoveOne(this.$props.type)
             this.handlerUploadRemoveMany(filelists)
         },
         //文件状态改变时的函数(主要逻辑函数)
@@ -94,11 +96,13 @@ export default {
                 const params = new FormData();
                 console.log(params);
                 params.append("file", file);
+                const token = useStore().state.user.token
                 fetch('http://localhost:3300/upload', {
                     method: 'POST',
                     body: params,
                     headers: {
-                        token: useStore().state.user.token,
+                        
+                        Authorization: 'Bearer ' + token
                     }
                 }).then(r => r.json()).then(res => {
                     if (res.msg === "success") {

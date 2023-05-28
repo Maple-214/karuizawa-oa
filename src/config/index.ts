@@ -1,6 +1,3 @@
-/*
- * @Description:
- */
 // 默认配置
 import {  netConfig, settingConfig, themeConfig } from './default'
 // 自定义配置

@@ -1,5 +1,5 @@
 /*
- * @Description:表格相关
+ * @Description:表格 相关
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'

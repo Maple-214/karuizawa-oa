@@ -60,7 +60,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       }
     ]
   },
-  // ...constantModules,
+  ...constantModules,
   { path: '/:pathMatch(.*)*', name: '404', component: () => import(/* webpackChunkName: "error-page-404" */ '@/views/error-page/404.vue'), }
 ]
 

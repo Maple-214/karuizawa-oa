@@ -1,9 +1,5 @@
 /*
- * @Description: setting moudle
- * @Author: ZY
- * @Date: 2020-12-23 10:25:37
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-05 15:39:26
+ * @Description: setting  moudle
  */
 import {
   Store as VuexStore,

@@ -1,6 +1,3 @@
-<!--
- * @Description:
--->
 <template>
   <ImageCropUpload
     v-model="show"

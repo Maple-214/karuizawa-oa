@@ -1,5 +1,5 @@
 /*
- * @Description:表格数据接口
+ * @Description:表格数据 接口
  */
 import https from '@/utils/https'
 import { RootObject } from '@/model/rootObject'
@@ -8,8 +8,10 @@ import { HourseModel } from '@/model/hourseModel'
 import { ArticleList } from '@/model/articleList'
 
 export const defaultHourseModel = {
-  filelist: [{filename:'',url:''}],
-  preview_image: {url:'',filename:''},
+  house_structure_picture: { url: '', filename: '' },
+  house_structure_picture_filelist: [{ filename: '', url: '' }],
+  filelist: [{ filename: '', url: '' }],
+  preview_image: { url: '', filename: '' },
   name: "",
   desc: "",
   station: "",
@@ -19,7 +21,7 @@ export const defaultHourseModel = {
   transportation: "",
   House_structure: "",
   detail_desc: "",
-  indoor_map_desc: [{src: "",desc: "",filename:''}],
+  indoor_map_desc: [{ src: "", desc: "", filename: '' }],
   location: "",
   private_road: "",
   setback: "",
@@ -46,11 +48,14 @@ export const defaultHourseModel = {
   legal_restrictions: "",
   parking: "",
   update: "",
-  swiper_number: "",
+  pic_type: "",
   regional_district_block: "",
   tag: [],
-  pic_desc:'',
-  new_hourse: null
+  pic_desc: '',
+  new_hourse: null,
+  youtube_src: '',
+  seller_talk: '',
+  charge_talk: ''
 }
 
 export const getArticles = (params: any) => {

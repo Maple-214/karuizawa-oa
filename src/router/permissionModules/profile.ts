@@ -1,5 +1,5 @@
 /*
- * @Description: 个人中心
+ * @Description: 个人 中心
  */
 import { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/Index.vue'
