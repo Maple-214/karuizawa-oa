@@ -93,12 +93,12 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('table.swiper_number')"
+        :label="t('table.pic_type')"
         width="80px"
         align="center"
       >
         <template #default="{ row }">
-          <span>{{ row.swiper_number }}</span>
+          <span>{{ row.pic_type }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -423,6 +423,39 @@
       </el-table-column>
 
       <el-table-column
+        :label="t('table.seller_talk')"
+        align="center"
+        width="230"
+        class-name="fixed-width"
+      >
+        <template #default="{ row, $index }">
+          <span>{{ row.seller_talk }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="t('table.charge_talk')"
+        align="center"
+        width="230"
+        class-name="fixed-width"
+      >
+        <template #default="{ row, $index }">
+          <span>{{ row.charge_talk }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="t('table.youtube_src')"
+        align="center"
+        width="230"
+        class-name="fixed-width"
+      >
+        <template #default="{ row, $index }">
+          <span>{{ row.youtube_src }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
         :label="t('table.tag')"
         align="center"
         width="330"
@@ -501,11 +534,11 @@
         status-icon="true"
       >
         <el-form-item
-          :label="t('table.swiper_number') + '：'"
-          prop="swiper_number"
+          :label="t('table.pic_type') + '：'"
+          prop="pic_type"
         >
           <el-select
-            v-model="tempHourseModel.swiper_number"
+            v-model="tempHourseModel.pic_type"
             class="filter-item"
             :placeholder="t('table.placeholder')"
           >
@@ -703,11 +736,11 @@ export default defineComponent({
       dialogPageviewsVisible: false,
       pageviewsData: [],
       rules: {
-        swiper_number: [
+        pic_type: [
           {
             required: true,
             message:
-              t("table.swiper_number") + t("table.is") + t("table.required"),
+              t("table.pic_type") + t("table.is") + t("table.required"),
             trigger: "change"
           }
         ],
@@ -897,7 +930,7 @@ export default defineComponent({
           "preview_image",
           "label",
           "indoor_map_desc",
-          "swiper_number",
+          "pic_type",
           "pic_desc",
           "tag_str",
           "tag",
@@ -964,7 +997,7 @@ export default defineComponent({
           "preview_image",
           "label",
           "indoor_map_desc",
-          "swiper_number",
+          "pic_type",
           "pic_desc",
           "tag_str",
           "tag",
@@ -999,6 +1032,8 @@ export default defineComponent({
         form.validate(async (valid: any) => {
           if (valid) {
             const tempData = cloneDeep(dataMap.tempHourseModel);
+            console.log({99:tempData.filelist,88:tempData.house_structure_picture});
+            
             // @ts-ignore
             tempData.preview_image = tempData.filelist[0];
             tempData.house_structure_picture =
