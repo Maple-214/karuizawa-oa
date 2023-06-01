@@ -59,23 +59,23 @@ export const defaultHourseModel = {
 }
 
 export const getArticles = (params: any) => {
-  return https().request<RootObject<ArticleList<HourseModel>>>('hourse/hourses', Method.GET, params, ContentType.json)
+  return https().request<RootObject<ArticleList<HourseModel>>>('api/hourse/hourses', Method.GET, params, ContentType.json)
 }
 
 export const getArticle = (params: any) => {
-  return https().request<RootObject<HourseModel>>('artupdateArticleicle/articleInfo', Method.GET, params, ContentType.form)
+  return https().request<RootObject<HourseModel>>('api/artupdateArticleicle/articleInfo', Method.GET, params, ContentType.form)
 }
 
 export const createArticle = (data: any) => {
-  return https().request<RootObject<HourseModel>>('hourse/createArticle', Method.POST, data, ContentType.json)
+  return https().request<RootObject<HourseModel>>('api/hourse/createArticle', Method.POST, data, ContentType.json)
 }
 
 export const updateArticle = (params: any) => {
-  return https().request<RootObject<HourseModel>>('hourse/updateArticle', Method.POST, params, ContentType.json)
+  return https().request<RootObject<HourseModel>>('api/hourse/updateArticle', Method.POST, params, ContentType.json)
 }
 
 export const deleteArticle = (params: any) => {
-  return https().request<RootObject<HourseModel>>(`hourse/delete`, Method.POST, params, ContentType.json)
+  return https().request<RootObject<HourseModel>>(`api/hourse/delete`, Method.POST, params, ContentType.json)
 }
 
 export interface Pageviews {
@@ -83,5 +83,5 @@ export interface Pageviews {
 }
 
 export const getPageviews = (params: any) => {
-  return https().request<RootObject<Pageviews>>('pageviews', Method.GET, params, ContentType.json)
+  return https().request<RootObject<Pageviews>>('api/pageviews', Method.GET, params, ContentType.json)
 }
