@@ -127,12 +127,6 @@
       </el-table-column>
       <el-table-column :label="t('table.station')" align="center" width="105px">
         <template #default="{ row }">
-          <svg-icon
-            v-for="n in +row.importance"
-            :key="n"
-            name="star"
-            class="iconfont iconxing"
-          />
           <span>{{ row.station }}</span>
         </template>
       </el-table-column>
