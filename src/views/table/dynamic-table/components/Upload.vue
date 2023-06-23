@@ -1,5 +1,5 @@
 <template>
-    <el-upload v-show="showUpload" :limit="limit" :multiple="multiple" action="http://20.27.24.103/api/upload" accept="image/*"
+    <el-upload v-show="showUpload" :limit="limit" :multiple="multiple" action="http://20.210.204.94/api/upload" accept="image/*"
         :on-change="uploadFile" list-type="picture-card" :auto-upload="false" :file-list="filelist"
         :on-exceed="handleExceed"  :on-remove="handleRemove" :handlerUploadRemove="handlerUploadRemove" :handlerUploadRemoveOne="handlerUploadRemoveMany" ref="upload"
         class="avatar-uploader" :disabled="disabled">
