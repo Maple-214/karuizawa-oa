@@ -97,7 +97,7 @@ export default {
                 console.log(params);
                 params.append("file", file);
                 const token = useStore().state.user.token
-                fetch('http://localhost:3300/upload', {
+                fetch('https://www.oppenheim.co.jp/upload', {
                     method: 'POST',
                     body: params,
                     headers: {
